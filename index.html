@@ -33,12 +33,14 @@
             margin-bottom: 20px;
         }
 
-        .section {
+        /* 📄 PDF Page Break Fix */
+        .section, .dashboard, .result, .chart-container {
             margin-top: 20px;
             padding: 15px;
             background: #f9fff9;
             border-radius: 10px;
             border: 1px solid #ddd;
+            page-break-inside: avoid; /* ఎలిమెంట్స్ సగానికి కట్ కాకుండా ఆపుతుంది */
         }
 
         label {
@@ -77,6 +79,9 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin-top: 20px;
+            padding: 0;
+            background: transparent;
+            border: none;
         }
 
         .card {
@@ -85,6 +90,7 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,.15);
+            page-break-inside: avoid;
         }
 
         .card h3 {
@@ -96,19 +102,22 @@
         }
 
         .result {
-            margin-top: 20px;
-            padding: 20px;
             background: #fff;
             border: 2px solid green;
-            border-radius: 10px;
+        }
+
+        /* చార్ట్ సైజ్ తగ్గించి కట్ కాకుండా చేయడం */
+        .chart-container {
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
         }
 
         canvas {
-            margin-top: 20px;
             max-width: 100%;
+            margin: auto;
         }
 
-        /* లాంగ్వేజ్ బటన్ డిజైన్ */
         #langBtn {
             width: auto;
             float: right;
@@ -219,14 +228,14 @@
     </div>
 
     <!-- Buttons Section -->
-    <div id="actionButtons">
+    <div id="actionButtons" style="margin-top: 15px;">
         <button onclick="calculateExpense()">💰 Calculate Expense</button>
         <button onclick="printReport()">📄 Print Report</button>
         <button onclick="downloadPDF()">📥 Download PDF</button>
         <button onclick="resetForm()">🔄 Reset Form</button>
     </div>
 
-    <div class="section">
+    <div class="section chart-container">
         <h2>📊 Expense Chart</h2>
         <canvas id="expenseChart"></canvas>
     </div>
@@ -311,67 +320,37 @@
     }
 
     function printReport(){
-        const farmer = document.getElementById("farmerName").value || "N/A";
-        const village = document.getElementById("village").value || "N/A";
-        const crop = document.getElementById("crop").value || "N/A";
-        const date = document.getElementById("date").value || "N/A";
-        const report = document.getElementById("reportSection").innerHTML;
-        const printWindow = window.open("","","width=900,height=700");
-
-        printWindow.document.write(`
-            <html>
-            <head>
-            <title>Farmer Report</title>
-            <style>
-                body{ font-family:Arial,sans-serif; padding:20px; }
-                h1{ color:green; text-align:center; }
-                table{ width:100%; border-collapse:collapse; margin-top:15px; }
-                table,th,td{ border:1px solid #333; }
-                th,td{ padding:8px; text-align:left; }
-                .report{ margin-top:20px; padding:15px; border:1px solid green; border-radius:8px; }
-            </style>
-            </head>
-            <body>
-            <h1>🌾 Smart Farmer Expense Report</h1>
-            <table>
-                <tr><th>Farmer Name</th><td>${farmer}</td></tr>
-                <tr><th>Village</th><td>${village}</td></tr>
-                <tr><th>Crop</th><td>${crop}</td></tr>
-                <tr><th>Date</th><td>${date}</td></tr>
-            </table>
-            <div class="report">${report}</div>
-            </body>
-            </html>
-        `);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
+        window.print();
     }
 
     function downloadPDF(){
         calculateExpense();
         setTimeout(() => {
-            // మొత్తం పేజీని సెలెక్ట్ చేస్తున్నాము (కేవలం రిపోర్ట్ సెక్షన్ మాత్రమే కాదు)
             const element = document.getElementById("mainContainer");
             
-            // PDF లో బటన్స్ ప్రింట్ కాకుండా వాటిని తాత్కాలికంగా దాచడం
-            const buttons = document.querySelectorAll("button");
-            buttons.forEach(btn => btn.style.display = "none");
+            // బటన్స్ PDF లో కనిపించకుండా దాచడం
+            const actionButtons = document.getElementById("actionButtons");
+            const langBtn = document.getElementById("langBtn");
+            
+            if(actionButtons) actionButtons.style.display = "none";
+            if(langBtn) langBtn.style.display = "none";
 
+            // 📄 Page break options updated
             const options = {
-                margin: 10, // పేజీ చుట్టూ 10mm మార్జిన్
+                margin: [10, 10, 10, 10], // Top, Left, Bottom, Right margin
                 filename: "Farmer_Expense_Report.pdf",
                 image: { type: "jpeg", quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+                pagebreak: { mode: 'css', avoid: ['.section', '.card', '.dashboard', '.result', '.chart-container'] } 
             };
 
             html2pdf().set(options).from(element).save().then(() => {
-                // PDF డౌన్‌లోడ్ అయిన తర్వాత బటన్స్‌ని మళ్లీ కనిపించేలా చేయడం
-                buttons.forEach(btn => btn.style.display = "");
+                // PDF డౌన్‌లోడ్ అయిన తర్వాత బటన్స్‌ని మళ్లీ చూపించడం
+                if(actionButtons) actionButtons.style.display = "block";
+                if(langBtn) langBtn.style.display = "block";
             });
-        }, 1000);
+        }, 1000); // చార్ట్ రెండర్ కావడానికి ఒక సెకను ఆగుతుంది
     }
 
     function saveData(){
@@ -440,4 +419,3 @@
 
 </body>
 </html>
-
