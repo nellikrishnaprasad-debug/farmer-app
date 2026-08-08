@@ -33,16 +33,17 @@
             margin-bottom: 20px;
         }
 
-        /* 📄 PDF Page Break Fix (Stronger) */
+        /* 📄 PDF Page Break Fix */
         .section, .dashboard, .result, .chart-container, .card {
             margin-top: 20px;
             padding: 15px;
             background: #f9fff9;
             border-radius: 10px;
             border: 1px solid #ddd;
-            page-break-inside: avoid !important; /* పాత బ్రౌజర్స్ కోసం */
-            break-inside: avoid !important; /* కొత్త బ్రౌజర్స్ కోసం */
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
             display: block;
+            overflow: hidden; /* ఇది ఎలిమెంట్స్ బయటకు రాకుండా ఆపుతుంది */
         }
 
         label {
@@ -337,14 +338,18 @@
             if(actionButtons) actionButtons.style.display = "none";
             if(langBtn) langBtn.style.display = "none";
 
-            // 📄 అత్యంత పవర్‌ఫుల్ పేజ్ బ్రేక్ సెట్టింగ్ (avoid-all)
+            // మొబైల్ స్క్రీన్ సైజుల వల్ల వచ్చే ఇబ్బందులను అధిగమించడానికి సెట్టింగ్స్
             const options = {
                 margin: 5,
                 filename: "Farmer_Expense_Report.pdf",
                 image: { type: "jpeg", quality: 1 },
-                html2canvas: { scale: 2, useCORS: true },
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true,
+                    windowWidth: 900 // ఫోన్ నుండి డౌన్లోడ్ చేసినా డెస్క్‌టాప్ సైజులోనే వస్తుంది
+                },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } 
+                pagebreak: { mode: ['css', 'legacy'], avoid: ['.section', '.dashboard', '.card', '.chart-container'] }
             };
 
             html2pdf().set(options).from(element).save().then(() => {
