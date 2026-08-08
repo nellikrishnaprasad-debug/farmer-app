@@ -31,6 +31,7 @@
             text-align: center;
             color: green;
             margin-bottom: 20px;
+            padding-top: 10px; /* పైన టైటిల్ కట్ కాకుండా గ్యాప్ */
         }
 
         /* 📄 PDF Page Break Fix */
@@ -43,7 +44,6 @@
             page-break-inside: avoid !important;
             break-inside: avoid !important;
             display: block;
-            overflow: hidden; /* ఇది ఎలిమెంట్స్ బయటకు రాకుండా ఆపుతుంది */
         }
 
         label {
@@ -338,15 +338,15 @@
             if(actionButtons) actionButtons.style.display = "none";
             if(langBtn) langBtn.style.display = "none";
 
-            // మొబైల్ స్క్రీన్ సైజుల వల్ల వచ్చే ఇబ్బందులను అధిగమించడానికి సెట్టింగ్స్
+            // ఇక్కడ Top Margin 15mm పెట్టాను, దీనివల్ల పైన టైటిల్ కట్ అవ్వదు.
             const options = {
-                margin: 5,
+                margin: [15, 10, 15, 10], // [Top, Right, Bottom, Left]
                 filename: "Farmer_Expense_Report.pdf",
                 image: { type: "jpeg", quality: 1 },
                 html2canvas: { 
                     scale: 2, 
                     useCORS: true,
-                    windowWidth: 900 // ఫోన్ నుండి డౌన్లోడ్ చేసినా డెస్క్‌టాప్ సైజులోనే వస్తుంది
+                    windowWidth: 800
                 },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
                 pagebreak: { mode: ['css', 'legacy'], avoid: ['.section', '.dashboard', '.card', '.chart-container'] }
