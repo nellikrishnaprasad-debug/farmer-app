@@ -31,10 +31,9 @@
             text-align: center;
             color: green;
             margin-bottom: 20px;
-            padding-top: 15px; /* పైన టైటిల్ కట్ కాకుండా గ్యాప్ */
+            padding-top: 15px;
         }
 
-        /* 📄 PDF Page Break Fix */
         .section, .dashboard, .result, .chart-container, .card {
             margin-top: 20px;
             padding: 15px;
@@ -230,7 +229,6 @@
         <input type="number" id="price">
     </div>
 
-    <!-- Buttons Section -->
     <div id="actionButtons" style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
         <button style="flex: 1;" onclick="calculateExpense()">💰 Calculate</button>
         <button style="flex: 1; background: #ff9800;" onclick="printReport()">📄 Print</button>
@@ -250,7 +248,6 @@
 
 </div>
 
-<!-- Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -300,9 +297,7 @@
     }
 
     function drawChart(seed, fert, labour, pesticide, irrigation, tractor, diesel, other){
-        if(chart){
-            chart.destroy();
-        }
+        if(chart){ chart.destroy(); }
         const ctx = document.getElementById("expenseChart").getContext("2d");
         chart = new Chart(ctx, {
             type: "pie",
@@ -313,52 +308,51 @@
                     backgroundColor: ['#8d6e63', '#4caf50', '#ff9800', '#f44336', '#2196f3', '#9c27b0', '#607d8b', '#ffeb3b']
                 }]
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: "bottom" }
-                }
-            }
+            options: { responsive: true, plugins: { legend: { position: "bottom" } } }
         });
     }
 
-    function printReport(){
-        window.print();
-    }
+    function printReport(){ window.print(); }
 
     function downloadPDF(){
         calculateExpense();
-        setTimeout(() => {
-            const element = document.getElementById("mainContainer");
-            
-            // బటన్స్ PDF లో కనిపించకుండా దాచడం
-            const actionButtons = document.getElementById("actionButtons");
-            const langBtn = document.getElementById("langBtn");
-            
-            if(actionButtons) actionButtons.style.display = "none";
-            if(langBtn) langBtn.style.display = "none";
+        
+        const element = document.getElementById("mainContainer");
+        const actionButtons = document.getElementById("actionButtons");
+        const langBtn = document.getElementById("langBtn");
+        
+        if(actionButtons) actionButtons.style.display = "none";
+        if(langBtn) langBtn.style.display = "none";
 
-            // ఇక్కడ Top Margin 15mm పెట్టాను, దీనివల్ల పైన టైటిల్ కట్ అవ్వదు. 
-            // windowWidth: 1024 వల్ల మొబైల్ వ్యూ ప్రాబ్లమ్స్ రావు.
+        // 🌟 ఇక్కడ కచ్చితమైన వెడల్పు (800px) సెట్ చేస్తున్నాము. దీనివల్ల కుడివైపు ఎక్కడా కట్ అవ్వదు.
+        const originalWidth = element.style.width;
+        const originalMaxWidth = element.style.maxWidth;
+        element.style.width = "800px";
+        element.style.maxWidth = "800px";
+
+        setTimeout(() => {
             const options = {
-                margin: [15, 10, 15, 10], // [Top, Right, Bottom, Left]
+                margin: [10, 10, 10, 10], 
                 filename: "Farmer_Expense_Report.pdf",
                 image: { type: "jpeg", quality: 1 },
                 html2canvas: { 
                     scale: 2, 
                     useCORS: true,
-                    windowWidth: 1024 
+                    scrollX: 0,
+                    scrollY: 0
                 },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
             html2pdf().set(options).from(element).save().then(() => {
-                // PDF డౌన్‌లోడ్ అయిన తర్వాత బటన్స్‌ని మళ్లీ చూపించడం
+                // PDF జనరేట్ అవ్వగానే తిరిగి పాత సైజుకు మార్చడం
+                element.style.width = originalWidth;
+                element.style.maxWidth = originalMaxWidth;
                 if(actionButtons) actionButtons.style.display = "flex";
                 if(langBtn) langBtn.style.display = "block";
             });
-        }, 800); 
+        }, 500); 
     }
 
     function saveData(){
@@ -420,9 +414,7 @@
         }
     }
 
-    window.onload = function(){
-        loadData();
-    };
+    window.onload = function(){ loadData(); };
 </script>
 
 </body>
