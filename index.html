@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌾 Smart Farmer Expense Manager V2</title>
+    <title>🌾 Smart Farmer Expense Manager</title>
 
     <style>
         * {
@@ -33,14 +33,16 @@
             margin-bottom: 20px;
         }
 
-        /* 📄 PDF Page Break Fix */
-        .section, .dashboard, .result, .chart-container {
+        /* 📄 PDF Page Break Fix (Stronger) */
+        .section, .dashboard, .result, .chart-container, .card {
             margin-top: 20px;
             padding: 15px;
             background: #f9fff9;
             border-radius: 10px;
             border: 1px solid #ddd;
-            page-break-inside: avoid; /* ఎలిమెంట్స్ సగానికి కట్ కాకుండా ఆపుతుంది */
+            page-break-inside: avoid !important; /* పాత బ్రౌజర్స్ కోసం */
+            break-inside: avoid !important; /* కొత్త బ్రౌజర్స్ కోసం */
+            display: block;
         }
 
         label {
@@ -68,6 +70,7 @@
             border-radius: 8px;
             font-size: 17px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         button:hover {
@@ -90,7 +93,7 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,.15);
-            page-break-inside: avoid;
+            margin-top: 0;
         }
 
         .card h3 {
@@ -106,7 +109,6 @@
             border: 2px solid green;
         }
 
-        /* చార్ట్ సైజ్ తగ్గించి కట్ కాకుండా చేయడం */
         .chart-container {
             max-width: 600px;
             margin: 20px auto;
@@ -228,11 +230,11 @@
     </div>
 
     <!-- Buttons Section -->
-    <div id="actionButtons" style="margin-top: 15px;">
-        <button onclick="calculateExpense()">💰 Calculate Expense</button>
-        <button onclick="printReport()">📄 Print Report</button>
-        <button onclick="downloadPDF()">📥 Download PDF</button>
-        <button onclick="resetForm()">🔄 Reset Form</button>
+    <div id="actionButtons" style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <button style="flex: 1;" onclick="calculateExpense()">💰 Calculate</button>
+        <button style="flex: 1; background: #ff9800;" onclick="printReport()">📄 Print</button>
+        <button style="flex: 1; background: #f44336;" onclick="downloadPDF()">📥 PDF</button>
+        <button style="flex: 1; background: #9e9e9e;" onclick="resetForm()">🔄 Reset</button>
     </div>
 
     <div class="section chart-container">
@@ -242,7 +244,7 @@
 
     <div class="result" id="reportSection">
         <h2 style="text-align:center;color:green">🌾 Smart Farmer Expense Report</h2>
-        <p>Total Expense : ₹0</p>
+        <p style="text-align:center;">Please enter details and click calculate.</p>
     </div>
 
 </div>
@@ -335,22 +337,22 @@
             if(actionButtons) actionButtons.style.display = "none";
             if(langBtn) langBtn.style.display = "none";
 
-            // 📄 Page break options updated
+            // 📄 అత్యంత పవర్‌ఫుల్ పేజ్ బ్రేక్ సెట్టింగ్ (avoid-all)
             const options = {
-                margin: [10, 10, 10, 10], // Top, Left, Bottom, Right margin
+                margin: 5,
                 filename: "Farmer_Expense_Report.pdf",
-                image: { type: "jpeg", quality: 0.98 },
+                image: { type: "jpeg", quality: 1 },
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                pagebreak: { mode: 'css', avoid: ['.section', '.card', '.dashboard', '.result', '.chart-container'] } 
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } 
             };
 
             html2pdf().set(options).from(element).save().then(() => {
                 // PDF డౌన్‌లోడ్ అయిన తర్వాత బటన్స్‌ని మళ్లీ చూపించడం
-                if(actionButtons) actionButtons.style.display = "block";
+                if(actionButtons) actionButtons.style.display = "flex";
                 if(langBtn) langBtn.style.display = "block";
             });
-        }, 1000); // చార్ట్ రెండర్ కావడానికి ఒక సెకను ఆగుతుంది
+        }, 800); 
     }
 
     function saveData(){
@@ -380,7 +382,7 @@
         document.getElementById("crop").selectedIndex = 0;
         document.getElementById("reportSection").innerHTML = `
             <h2 style="text-align:center;color:green">🌾 Smart Farmer Expense Report</h2>
-            <p>Total Expense : ₹0</p>
+            <p style="text-align:center;">Please enter details and click calculate.</p>
         `;
         document.getElementById("expenseCard").textContent = "₹0";
         document.getElementById("incomeCard").textContent = "₹0";
