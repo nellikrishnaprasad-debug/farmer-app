@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌾 Smart Farmer Expense Manager V2</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f2f8f2;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: green;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9fff9;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0b6b0b;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,.15);
+        }
+
+        .card h3 {
+            color: #2e7d32;
+        }
+
+        .card h2 {
+            margin-top: 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid green;
+            border-radius: 10px;
+        }
+
+        canvas {
+            margin-top: 20px;
+            max-width: 100%;
+        }
+
+        /* లాంగ్వేజ్ బటన్ డిజైన్ */
+        #langBtn {
+            width: auto;
+            float: right;
+            padding: 8px 15px;
+            margin-top: 0;
+            background: #0288d1;
+        }
+
+        @media(max-width: 600px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            #langBtn {
+                float: none;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container" id="mainContainer">
+
+    <button id="langBtn" onclick="changeLanguage()">🌐 తెలుగు</button>
+
+    <h1 id="title">🌾 Smart Farmer Expense Manager</h1>
+
+    <div class="section">
+        <h2>👨‍🌾 Farmer Details</h2>
+        <label>Farmer Name</label>
+        <input type="text" id="farmerName">
+        
+        <label>Village</label>
+        <input type="text" id="village">
+        
+        <label>Crop Name</label>
+        <select id="crop">
+            <option>వరి</option>
+            <option>పత్తి</option>
+            <option>మొక్కజొన్న</option>
+            <option>మిర్చి</option>
+            <option>పసుపు</option>
+            <option>ఇతర</option>
+        </select>
+        
+        <label>Total Acres</label>
+        <input type="number" id="acres">
+        
+        <label>Date</label>
+        <input type="date" id="date">
+    </div>
+
+    <div class="dashboard">
+        <div class="card">
+            <h3>💰 Expense</h3>
+            <h2 id="expenseCard">₹0</h2>
+        </div>
+        <div class="card">
+            <h3>💵 Income</h3>
+            <h2 id="incomeCard">₹0</h2>
+        </div>
+        <div class="card">
+            <h3>📈 Profit</h3>
+            <h2 id="profitCard">₹0</h2>
+        </div>
+        <div class="card">
+            <h3>🌾 Cost/Acre</h3>
+            <h2 id="acreCard">₹0</h2>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>💰 Expense Details</h2>
+        <label>Seed Cost (₹)</label>
+        <input type="number" id="seed">
+        
+        <label>Fertilizer Cost (₹)</label>
+        <input type="number" id="fert">
+        
+        <label>Labour Cost (₹)</label>
+        <input type="number" id="labour">
+        
+        <label>Pesticide Cost (₹)</label>
+        <input type="number" id="pesticide">
+        
+        <label>Irrigation Cost (₹)</label>
+        <input type="number" id="irrigation">
+        
+        <label>Tractor Cost (₹)</label>
+        <input type="number" id="tractor">
+        
+        <label>Diesel Cost (₹)</label>
+        <input type="number" id="diesel">
+        
+        <label>Other Expenses (₹)</label>
+        <input type="number" id="other">
+    </div>
+
+    <div class="section">
+        <h2>📈 Income Details</h2>
+        <label>Total Yield (Quintals)</label>
+        <input type="number" id="yield">
+        
+        <label>Price Per Quintal (₹)</label>
+        <input type="number" id="price">
+    </div>
+
+    <!-- Buttons Section -->
+    <div id="actionButtons">
+        <button onclick="calculateExpense()">💰 Calculate Expense</button>
+        <button onclick="printReport()">📄 Print Report</button>
+        <button onclick="downloadPDF()">📥 Download PDF</button>
+        <button onclick="resetForm()">🔄 Reset Form</button>
+    </div>
+
+    <div class="section">
+        <h2>📊 Expense Chart</h2>
+        <canvas id="expenseChart"></canvas>
+    </div>
+
+    <div class="result" id="reportSection">
+        <h2 style="text-align:center;color:green">🌾 Smart Farmer Expense Report</h2>
+        <p>Total Expense : ₹0</p>
+    </div>
+
+</div>
+
+<!-- Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    let chart = null;
+    let telugu = false;
+
+    function calculateExpense() {
+        const seed = Number(document.getElementById("seed").value) || 0;
+        const fert = Number(document.getElementById("fert").value) || 0;
+        const labour = Number(document.getElementById("labour").value) || 0;
+        const pesticide = Number(document.getElementById("pesticide").value) || 0;
+        const irrigation = Number(document.getElementById("irrigation").value) || 0;
+        const tractor = Number(document.getElementById("tractor").value) || 0;
+        const diesel = Number(document.getElementById("diesel").value) || 0;
+        const other = Number(document.getElementById("other").value) || 0;
+
+        const acres = Number(document.getElementById("acres").value) || 1;
+        const yieldQty = Number(document.getElementById("yield").value) || 0;
+        const price = Number(document.getElementById("price").value) || 0;
+
+        const totalExpense = seed + fert + labour + pesticide + irrigation + tractor + diesel + other;
+        const totalIncome = yieldQty * price;
+        const perAcre = totalExpense / acres;
+        const profitLoss = totalIncome - totalExpense;
+
+        document.getElementById("expenseCard").textContent = "₹ " + totalExpense.toLocaleString();
+        document.getElementById("incomeCard").textContent = "₹ " + totalIncome.toLocaleString();
+        document.getElementById("profitCard").textContent = "₹ " + profitLoss.toLocaleString();
+        document.getElementById("acreCard").textContent = "₹ " + perAcre.toFixed(2);
+
+        const color = profitLoss >= 0 ? "green" : "red";
+
+        document.getElementById("reportSection").innerHTML = `
+            <h2 style="text-align:center;color:green">🌾 Smart Farmer Expense Report</h2>
+            <hr style="margin: 10px 0;">
+            <p style="margin-bottom: 8px;"><b>Total Expense :</b> ₹ ${totalExpense.toLocaleString()}</p>
+            <p style="margin-bottom: 8px;"><b>Cost Per Acre :</b> ₹ ${perAcre.toFixed(2)}</p>
+            <p style="margin-bottom: 8px;"><b>Total Income :</b> ₹ ${totalIncome.toLocaleString()}</p>
+            <p style="color:${color};font-weight:bold;font-size:18px;">
+                <b>Profit / Loss :</b> ₹ ${profitLoss.toLocaleString()}
+            </p>
+        `;
+
+        drawChart(seed, fert, labour, pesticide, irrigation, tractor, diesel, other);
+        saveData();
+    }
+
+    function drawChart(seed, fert, labour, pesticide, irrigation, tractor, diesel, other){
+        if(chart){
+            chart.destroy();
+        }
+        const ctx = document.getElementById("expenseChart").getContext("2d");
+        chart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: ["Seed", "Fertilizer", "Labour", "Pesticide", "Irrigation", "Tractor", "Diesel", "Other"],
+                datasets: [{
+                    data: [seed, fert, labour, pesticide, irrigation, tractor, diesel, other],
+                    backgroundColor: ['#8d6e63', '#4caf50', '#ff9800', '#f44336', '#2196f3', '#9c27b0', '#607d8b', '#ffeb3b']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: "bottom" }
+                }
+            }
+        });
+    }
+
+    function printReport(){
+        const farmer = document.getElementById("farmerName").value || "N/A";
+        const village = document.getElementById("village").value || "N/A";
+        const crop = document.getElementById("crop").value || "N/A";
+        const date = document.getElementById("date").value || "N/A";
+        const report = document.getElementById("reportSection").innerHTML;
+        const printWindow = window.open("","","width=900,height=700");
+
+        printWindow.document.write(`
+            <html>
+            <head>
+            <title>Farmer Report</title>
+            <style>
+                body{ font-family:Arial,sans-serif; padding:20px; }
+                h1{ color:green; text-align:center; }
+                table{ width:100%; border-collapse:collapse; margin-top:15px; }
+                table,th,td{ border:1px solid #333; }
+                th,td{ padding:8px; text-align:left; }
+                .report{ margin-top:20px; padding:15px; border:1px solid green; border-radius:8px; }
+            </style>
+            </head>
+            <body>
+            <h1>🌾 Smart Farmer Expense Report</h1>
+            <table>
+                <tr><th>Farmer Name</th><td>${farmer}</td></tr>
+                <tr><th>Village</th><td>${village}</td></tr>
+                <tr><th>Crop</th><td>${crop}</td></tr>
+                <tr><th>Date</th><td>${date}</td></tr>
+            </table>
+            <div class="report">${report}</div>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+    }
+
+    function downloadPDF(){
+        calculateExpense();
+        setTimeout(() => {
+            // మొత్తం పేజీని సెలెక్ట్ చేస్తున్నాము (కేవలం రిపోర్ట్ సెక్షన్ మాత్రమే కాదు)
+            const element = document.getElementById("mainContainer");
+            
+            // PDF లో బటన్స్ ప్రింట్ కాకుండా వాటిని తాత్కాలికంగా దాచడం
+            const buttons = document.querySelectorAll("button");
+            buttons.forEach(btn => btn.style.display = "none");
+
+            const options = {
+                margin: 10, // పేజీ చుట్టూ 10mm మార్జిన్
+                filename: "Farmer_Expense_Report.pdf",
+                image: { type: "jpeg", quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+                pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+            };
+
+            html2pdf().set(options).from(element).save().then(() => {
+                // PDF డౌన్‌లోడ్ అయిన తర్వాత బటన్స్‌ని మళ్లీ కనిపించేలా చేయడం
+                buttons.forEach(btn => btn.style.display = "");
+            });
+        }, 1000);
+    }
+
+    function saveData(){
+        const ids = ["farmerName", "village", "crop", "date", "acres", "seed", "fert", "labour", "pesticide", "irrigation", "tractor", "diesel", "other", "yield", "price"];
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) localStorage.setItem(id, el.value);
+        });
+    }
+
+    function loadData(){
+        const ids = ["farmerName", "village", "crop", "date", "acres", "seed", "fert", "labour", "pesticide", "irrigation", "tractor", "diesel", "other", "yield", "price"];
+        ids.forEach(id => {
+            const value = localStorage.getItem(id);
+            const el = document.getElementById(id);
+            if(el && value !== null) el.value = value;
+        });
+    }
+
+    function resetForm(){
+        if(!confirm("Are you sure you want to reset all data?")) return;
+        const ids = ["farmerName", "village", "crop", "date", "acres", "seed", "fert", "labour", "pesticide", "irrigation", "tractor", "diesel", "other", "yield", "price"];
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.value = "";
+        });
+        document.getElementById("crop").selectedIndex = 0;
+        document.getElementById("reportSection").innerHTML = `
+            <h2 style="text-align:center;color:green">🌾 Smart Farmer Expense Report</h2>
+            <p>Total Expense : ₹0</p>
+        `;
+        document.getElementById("expenseCard").textContent = "₹0";
+        document.getElementById("incomeCard").textContent = "₹0";
+        document.getElementById("profitCard").textContent = "₹0";
+        document.getElementById("acreCard").textContent = "₹0";
+        localStorage.clear();
+        if(chart){ chart.destroy(); chart = null; }
+    }
+
+    function changeLanguage(){
+        telugu = !telugu;
+        const labels = document.querySelectorAll("label");
+        if(telugu){
+            document.getElementById("langBtn").textContent = "🌐 English";
+            document.getElementById("title").textContent = "🌾 స్మార్ట్ రైతు ఖర్చుల కాలిక్యులేటర్";
+            labels[0].textContent = "రైతు పేరు"; labels[1].textContent = "గ్రామం"; labels[2].textContent = "పంట పేరు";
+            labels[3].textContent = "మొత్తం ఎకరాలు"; labels[4].textContent = "తేదీ"; labels[5].textContent = "విత్తనాల ఖర్చు";
+            labels[6].textContent = "ఎరువుల ఖర్చు"; labels[7].textContent = "కూలీల ఖర్చు"; labels[8].textContent = "పురుగుమందుల ఖర్చు";
+            labels[9].textContent = "నీటి ఖర్చు"; labels[10].textContent = "ట్రాక్టర్ ఖర్చు"; labels[11].textContent = "డీజిల్ ఖర్చు";
+            labels[12].textContent = "ఇతర ఖర్చులు"; labels[13].textContent = "మొత్తం దిగుబడి"; labels[14].textContent = "క్వింటాల్ ధర";
+        }else{
+            document.getElementById("langBtn").textContent = "🌐 తెలుగు";
+            document.getElementById("title").textContent = "🌾 Smart Farmer Expense Manager";
+            labels[0].textContent = "Farmer Name"; labels[1].textContent = "Village"; labels[2].textContent = "Crop Name";
+            labels[3].textContent = "Total Acres"; labels[4].textContent = "Date"; labels[5].textContent = "Seed Cost";
+            labels[6].textContent = "Fertilizer Cost"; labels[7].textContent = "Labour Cost"; labels[8].textContent = "Pesticide Cost";
+            labels[9].textContent = "Irrigation Cost"; labels[10].textContent = "Tractor Cost"; labels[11].textContent = "Diesel Cost";
+            labels[12].textContent = "Other Expenses"; labels[13].textContent = "Total Yield (Quintals)"; labels[14].textContent = "Price Per Quintal";
+        }
+    }
+
+    window.onload = function(){
+        loadData();
+    };
+</script>
+
+</body>
+</html>
+
