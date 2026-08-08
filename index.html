@@ -22,7 +22,7 @@
             max-width: 900px;
             margin: auto;
             background: #fff;
-            padding: 20px;
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,.2);
         }
@@ -31,7 +31,6 @@
             text-align: center;
             color: green;
             margin-bottom: 20px;
-            padding-top: 15px;
         }
 
         .section, .dashboard, .result, .chart-container, .card {
@@ -96,13 +95,8 @@
             margin-top: 0;
         }
 
-        .card h3 {
-            color: #2e7d32;
-        }
-
-        .card h2 {
-            margin-top: 10px;
-        }
+        .card h3 { color: #2e7d32; }
+        .card h2 { margin-top: 10px; }
 
         .result {
             background: #fff;
@@ -197,25 +191,18 @@
         <h2>💰 Expense Details</h2>
         <label>Seed Cost (₹)</label>
         <input type="number" id="seed">
-        
         <label>Fertilizer Cost (₹)</label>
         <input type="number" id="fert">
-        
         <label>Labour Cost (₹)</label>
         <input type="number" id="labour">
-        
         <label>Pesticide Cost (₹)</label>
         <input type="number" id="pesticide">
-        
         <label>Irrigation Cost (₹)</label>
         <input type="number" id="irrigation">
-        
         <label>Tractor Cost (₹)</label>
         <input type="number" id="tractor">
-        
         <label>Diesel Cost (₹)</label>
         <input type="number" id="diesel">
-        
         <label>Other Expenses (₹)</label>
         <input type="number" id="other">
     </div>
@@ -224,7 +211,6 @@
         <h2>📈 Income Details</h2>
         <label>Total Yield (Quintals)</label>
         <input type="number" id="yield">
-        
         <label>Price Per Quintal (₹)</label>
         <input type="number" id="price">
     </div>
@@ -324,31 +310,38 @@
         if(actionButtons) actionButtons.style.display = "none";
         if(langBtn) langBtn.style.display = "none";
 
-        // 🌟 ఇక్కడ కచ్చితమైన వెడల్పు (800px) సెట్ చేస్తున్నాము. దీనివల్ల కుడివైపు ఎక్కడా కట్ అవ్వదు.
+        // 🌟 మొబైల్ బ్రౌజర్ PDF కట్ చేయకుండా బాడీ, కంటైనర్ రెండిటిని ఫోర్స్ చేసి లాక్ చేయడం
         const originalWidth = element.style.width;
         const originalMaxWidth = element.style.maxWidth;
+        const originalMinWidth = element.style.minWidth;
+        const originalBodyWidth = document.body.style.width;
+
         element.style.width = "800px";
         element.style.maxWidth = "800px";
+        element.style.minWidth = "800px";
+        document.body.style.width = "840px"; 
 
         setTimeout(() => {
             const options = {
-                margin: [10, 10, 10, 10], 
+                margin: 10, 
                 filename: "Farmer_Expense_Report.pdf",
                 image: { type: "jpeg", quality: 1 },
                 html2canvas: { 
                     scale: 2, 
                     useCORS: true,
-                    scrollX: 0,
-                    scrollY: 0
+                    windowWidth: 840,
+                    width: 800
                 },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
             html2pdf().set(options).from(element).save().then(() => {
-                // PDF జనరేట్ అవ్వగానే తిరిగి పాత సైజుకు మార్చడం
+                // PDF పూర్తి అవ్వగానే మొబైల్ స్క్రీన్ మామూలు సైజుకి తీసుకురావడం
                 element.style.width = originalWidth;
                 element.style.maxWidth = originalMaxWidth;
+                element.style.minWidth = originalMinWidth;
+                document.body.style.width = originalBodyWidth;
                 if(actionButtons) actionButtons.style.display = "flex";
                 if(langBtn) langBtn.style.display = "block";
             });
