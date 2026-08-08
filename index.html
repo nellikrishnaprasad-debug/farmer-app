@@ -15,39 +15,39 @@
 
         body {
             background: #f2f8f2;
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
             max-width: 900px;
             margin: auto;
             background: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,.2);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.1);
         }
 
         h1 {
             text-align: center;
             color: green;
             margin-bottom: 20px;
+            font-size: 22px;
         }
 
-        .section, .dashboard, .result, .chart-container, .card {
+        /* 📄 Removed page-break-avoid from .section so it flows naturally */
+        .section {
             margin-top: 20px;
             padding: 15px;
             background: #f9fff9;
             border-radius: 10px;
             border: 1px solid #ddd;
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-            display: block;
         }
 
         label {
             display: block;
             margin-top: 10px;
             font-weight: bold;
+            color: #333;
         }
 
         input, select {
@@ -67,7 +67,7 @@
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 17px;
+            font-size: 16px;
             cursor: pointer;
             font-weight: bold;
         }
@@ -76,42 +76,50 @@
             background: #0b6b0b;
         }
 
+        /* Safe Flexbox for PDF instead of Grid */
         .dashboard {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            display: flex;
+            flex-wrap: wrap;
             gap: 15px;
             margin-top: 20px;
-            padding: 0;
-            background: transparent;
-            border: none;
         }
 
         .card {
+            flex: 1 1 calc(50% - 15px); /* Two columns */
             background: #e8f5e9;
             padding: 15px;
             border-radius: 10px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,.15);
-            margin-top: 0;
+            border: 1px solid #c8e6c9;
+            page-break-inside: avoid; /* Keep cards intact */
         }
 
-        .card h3 { color: #2e7d32; }
-        .card h2 { margin-top: 10px; }
+        .card h3 { color: #2e7d32; font-size: 16px; }
+        .card h2 { margin-top: 8px; font-size: 20px; }
 
         .result {
             background: #fff;
             border: 2px solid green;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            page-break-inside: avoid;
         }
 
         .chart-container {
-            max-width: 600px;
+            max-width: 100%;
             margin: 20px auto;
             text-align: center;
+            padding: 15px;
+            background: #f9fff9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            page-break-inside: avoid; /* Prevent chart from splitting */
         }
 
         canvas {
             max-width: 100%;
-            margin: auto;
+            height: auto;
         }
 
         #langBtn {
@@ -122,9 +130,10 @@
             background: #0288d1;
         }
 
+        /* Mobile specific adjustments */
         @media(max-width: 600px) {
-            .dashboard {
-                grid-template-columns: 1fr;
+            .card {
+                flex: 1 1 100%; /* Single column on mobile view */
             }
             #langBtn {
                 float: none;
@@ -216,20 +225,20 @@
     </div>
 
     <div id="actionButtons" style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
-        <button style="flex: 1;" onclick="calculateExpense()">💰 Calculate</button>
-        <button style="flex: 1; background: #ff9800;" onclick="printReport()">📄 Print</button>
-        <button style="flex: 1; background: #f44336;" onclick="downloadPDF()">📥 PDF</button>
-        <button style="flex: 1; background: #9e9e9e;" onclick="resetForm()">🔄 Reset</button>
+        <button style="flex: 1 1 45%;" onclick="calculateExpense()">💰 Calculate</button>
+        <button style="flex: 1 1 45%; background: #ff9800;" onclick="printReport()">📄 Print</button>
+        <button style="flex: 1 1 45%; background: #f44336;" onclick="downloadPDF()">📥 PDF</button>
+        <button style="flex: 1 1 45%; background: #9e9e9e;" onclick="resetForm()">🔄 Reset</button>
     </div>
 
-    <div class="section chart-container">
+    <div class="chart-container">
         <h2>📊 Expense Chart</h2>
         <canvas id="expenseChart"></canvas>
     </div>
 
     <div class="result" id="reportSection">
         <h2 style="text-align:center;color:green">🌾 Smart Farmer Expense Report</h2>
-        <p style="text-align:center;">Please enter details and click calculate.</p>
+        <p style="text-align:center; margin-top: 10px;">Please enter details and click calculate.</p>
     </div>
 
 </div>
@@ -269,11 +278,11 @@
 
         document.getElementById("reportSection").innerHTML = `
             <h2 style="text-align:center;color:green">🌾 Smart Farmer Expense Report</h2>
-            <hr style="margin: 10px 0;">
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ccc;">
             <p style="margin-bottom: 8px;"><b>Total Expense :</b> ₹ ${totalExpense.toLocaleString()}</p>
             <p style="margin-bottom: 8px;"><b>Cost Per Acre :</b> ₹ ${perAcre.toFixed(2)}</p>
             <p style="margin-bottom: 8px;"><b>Total Income :</b> ₹ ${totalIncome.toLocaleString()}</p>
-            <p style="color:${color};font-weight:bold;font-size:18px;">
+            <p style="color:${color}; font-weight:bold; font-size:18px; margin-top: 10px;">
                 <b>Profit / Loss :</b> ₹ ${profitLoss.toLocaleString()}
             </p>
         `;
@@ -307,41 +316,22 @@
         const actionButtons = document.getElementById("actionButtons");
         const langBtn = document.getElementById("langBtn");
         
+        // Hide buttons for PDF
         if(actionButtons) actionButtons.style.display = "none";
         if(langBtn) langBtn.style.display = "none";
 
-        // 🌟 మొబైల్ బ్రౌజర్ PDF కట్ చేయకుండా బాడీ, కంటైనర్ రెండిటిని ఫోర్స్ చేసి లాక్ చేయడం
-        const originalWidth = element.style.width;
-        const originalMaxWidth = element.style.maxWidth;
-        const originalMinWidth = element.style.minWidth;
-        const originalBodyWidth = document.body.style.width;
-
-        element.style.width = "800px";
-        element.style.maxWidth = "800px";
-        element.style.minWidth = "800px";
-        document.body.style.width = "840px"; 
-
         setTimeout(() => {
+            // Clean, straightforward PDF options without forced screen widths
             const options = {
-                margin: 10, 
+                margin: 10,
                 filename: "Farmer_Expense_Report.pdf",
                 image: { type: "jpeg", quality: 1 },
-                html2canvas: { 
-                    scale: 2, 
-                    useCORS: true,
-                    windowWidth: 840,
-                    width: 800
-                },
-                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
             };
 
             html2pdf().set(options).from(element).save().then(() => {
-                // PDF పూర్తి అవ్వగానే మొబైల్ స్క్రీన్ మామూలు సైజుకి తీసుకురావడం
-                element.style.width = originalWidth;
-                element.style.maxWidth = originalMaxWidth;
-                element.style.minWidth = originalMinWidth;
-                document.body.style.width = originalBodyWidth;
+                // Show buttons again
                 if(actionButtons) actionButtons.style.display = "flex";
                 if(langBtn) langBtn.style.display = "block";
             });
