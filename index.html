@@ -31,7 +31,7 @@
             text-align: center;
             color: green;
             margin-bottom: 20px;
-            padding-top: 10px; /* పైన టైటిల్ కట్ కాకుండా గ్యాప్ */
+            padding-top: 15px; /* పైన టైటిల్ కట్ కాకుండా గ్యాప్ */
         }
 
         /* 📄 PDF Page Break Fix */
@@ -338,7 +338,8 @@
             if(actionButtons) actionButtons.style.display = "none";
             if(langBtn) langBtn.style.display = "none";
 
-            // ఇక్కడ Top Margin 15mm పెట్టాను, దీనివల్ల పైన టైటిల్ కట్ అవ్వదు.
+            // ఇక్కడ Top Margin 15mm పెట్టాను, దీనివల్ల పైన టైటిల్ కట్ అవ్వదు. 
+            // windowWidth: 1024 వల్ల మొబైల్ వ్యూ ప్రాబ్లమ్స్ రావు.
             const options = {
                 margin: [15, 10, 15, 10], // [Top, Right, Bottom, Left]
                 filename: "Farmer_Expense_Report.pdf",
@@ -346,10 +347,10 @@
                 html2canvas: { 
                     scale: 2, 
                     useCORS: true,
-                    windowWidth: 800
+                    windowWidth: 1024 
                 },
                 jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                pagebreak: { mode: ['css', 'legacy'], avoid: ['.section', '.dashboard', '.card', '.chart-container'] }
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
             html2pdf().set(options).from(element).save().then(() => {
