@@ -79,7 +79,6 @@
         .card h3 { color: #2e7d32; font-size: 16px; }
         .card h2 { margin-top: 8px; font-size: 20px; }
 
-        /* 3 బటన్స్ కి తగ్గట్టు డిజైన్ మార్చాను */
         .buttons-row {
             display: flex;
             flex-wrap: wrap;
@@ -88,7 +87,7 @@
         }
 
         .buttons-row button {
-            flex: 1 1 30%; /* 3 బటన్స్ సమానంగా రావడానికి */
+            flex: 1 1 30%;
             padding: 12px;
             background: green;
             color: white;
@@ -140,17 +139,39 @@
             flex: none;
         }
 
+        /* మొబైల్ స్క్రీన్ సెట్టింగ్స్ */
         @media(max-width: 600px) {
             .card {
                 flex: 1 1 100%;
             }
             .buttons-row button {
-                flex: 1 1 100%; /* మొబైల్ లో బటన్స్ ఒకదాని కింద ఒకటి రావడానికి */
+                flex: 1 1 100%;
             }
             #langBtn {
                 float: none;
                 width: 100%;
                 margin-bottom: 15px;
+            }
+        }
+
+        /* 🖨️ ప్రింట్ (PDF) సెట్టింగ్స్ */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            /* బటన్స్ ప్రింట్ లో రాకుండా హైడ్ చేయడం */
+            #actionButtons, #langBtn {
+                display: none !important;
+            }
+            /* మీరు అడిగినట్లు ఎక్స్‌పెన్స్ డీటెయిల్స్ ని రెండవ పేజీలోకి పంపడం */
+            #expenseSection {
+                page-break-before: always;
+                margin-top: 0;
             }
         }
     </style>
@@ -208,7 +229,8 @@
         </div>
     </div>
 
-    <div class="section">
+    <!-- ఈ సెక్షన్‌కి ID ఇచ్చాను, ఇది ఆటోమెటిక్ గా 2వ పేజీలో ప్రింట్ అవుతుంది -->
+    <div class="section" id="expenseSection">
         <h2>💰 Expense Details</h2>
         <label>Seed Cost (₹)</label>
         <input type="number" id="seed">
@@ -236,7 +258,6 @@
         <input type="number" id="price">
     </div>
 
-    <!-- PDF బటన్ తొలగించబడింది -->
     <div id="actionButtons" class="buttons-row">
         <button onclick="calculateExpense()">💰 Calculate</button>
         <button class="btn-print" onclick="printReport()">📄 Print</button>
@@ -255,7 +276,6 @@
 
 </div>
 
-<!-- కేవలం Chart.js మాత్రమే ఉంచాను, PDF లైబ్రరీ తీసేసాను -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -323,8 +343,6 @@
     function printReport(){ 
         window.print(); 
     }
-
-    // PDF ఫంక్షన్ పూర్తిగా తొలగించబడింది
 
     function saveData(){
         const ids = ["farmerName", "village", "crop", "date", "acres", "seed", "fert", "labour", "pesticide", "irrigation", "tractor", "diesel", "other", "yield", "price"];
