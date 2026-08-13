@@ -12,7 +12,7 @@
     <style>
         /* CSS (యాప్ డిజైన్) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #f2f8f2; padding: 15px; overflow-x: hidden; } /* స్క్రీన్ పక్కకు జరగకుండా */
+        body { background: #f2f8f2; padding: 15px; overflow-x: hidden; }
         
         .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,.1); }
         h1 { text-align: center; color: green; margin-bottom: 20px; font-size: 22px; }
@@ -47,72 +47,63 @@
 
 <div class="container" id="mainContainer">
 
-    <!-- 📱 ఇన్పుట్ స్క్రీన్ (యాప్ లో కనిపించేది) -->
-    <div id="inputSection">
-        <button id="langBtn" onclick="changeLanguage()">🌐 తెలుగు</button>
-        <h1 id="title">🌾 Smart Farmer Expense Manager</h1>
+    <button id="langBtn" onclick="changeLanguage()">🌐 తెలుగు</button>
+    <h1 id="title">🌾 Smart Farmer Expense Manager</h1>
 
-        <div class="section">
-            <h2>👨‍🌾 Farmer Details</h2>
-            <label>Farmer Name</label> <input type="text" id="farmerName">
-            <label>Village</label> <input type="text" id="village">
-            <label>Crop Name</label>
-            <select id="crop">
-                <option>వరి</option> <option>పత్తి</option> <option>మొక్కజొన్న</option> <option>మిర్చి</option> <option>పసుపు</option> <option>ఇతర</option>
-            </select>
-            <label>Total Acres</label> <input type="number" id="acres">
-            <label>Date</label> <input type="date" id="date">
-        </div>
-
-        <div class="section">
-            <h2>💰 Expense Details</h2>
-            <label>Seed Cost (₹)</label> <input type="number" id="seed">
-            <label>Fertilizer Cost (₹)</label> <input type="number" id="fert">
-            <label>Labour Cost (₹)</label> <input type="number" id="labour">
-            <label>Pesticide Cost (₹)</label> <input type="number" id="pesticide">
-            <label>Irrigation Cost (₹)</label> <input type="number" id="irrigation">
-            <label>Tractor Cost (₹)</label> <input type="number" id="tractor">
-            <label>Diesel Cost (₹)</label> <input type="number" id="diesel">
-            <label>Other Expenses (₹)</label> <input type="number" id="other">
-        </div>
-
-        <div class="section">
-            <h2>📈 Income Details</h2>
-            <label>Total Yield (Quintals)</label> <input type="number" id="yield">
-            <label>Price Per Quintal (₹)</label> <input type="number" id="price">
-        </div>
-
-        <!-- యాక్షన్ బటన్స్ (Calculate, PDF, Reset) -->
-        <div id="actionButtons" class="buttons-row">
-            <button onclick="calculateExpense()">💰 Calculate</button>
-            <button class="btn-pdf" onclick="downloadPDF()">📥 Download PDF</button>
-            <button class="btn-reset" onclick="resetForm()">🔄 Reset</button>
-        </div>
-
-        <!-- 💰 డ్యాష్ బోర్డ్ కార్డ్స్ -->
-        <div class="dashboard">
-            <div class="card"><h3 id="lblExp">💰 Expense</h3><h2 id="expenseCard">₹0</h2></div>
-            <div class="card"><h3 id="lblInc">💵 Income</h3><h2 id="incomeCard">₹0</h2></div>
-            <div class="card"><h3 id="lblProf">📈 Profit</h3><h2 id="profitCard">₹0</h2></div>
-            <div class="card"><h3 id="lblAcre">🌾 Cost/Acre</h3><h2 id="acreCard">₹0</h2></div>
-        </div>
-
-        <div class="chart-container">
-            <h2>📊 Expense Chart</h2>
-            <canvas id="expenseChart"></canvas>
-        </div>
+    <div class="section">
+        <h2>👨‍🌾 Farmer Details</h2>
+        <label>Farmer Name</label> <input type="text" id="farmerName">
+        <label>Village</label> <input type="text" id="village">
+        <label>Crop Name</label>
+        <select id="crop">
+            <option>వరి</option> <option>పత్తి</option> <option>మొక్కజొన్న</option> <option>మిర్చి</option> <option>పసుపు</option> <option>ఇతర</option>
+        </select>
+        <label>Total Acres</label> <input type="number" id="acres">
+        <label>Date</label> <input type="date" id="date">
     </div>
 
-    <!-- 📄 ప్రింట్ / PDF స్క్రీన్ (ఇది మీకు స్క్రీన్ మీద కనిపించదు, బ్యాక్ గ్రౌండ్ లోనే ఉండిపోతుంది) -->
-    <div id="printReportSection" style="position: absolute; top: 0; left: 0; z-index: -1000; opacity: 0; pointer-events: none; background: #fff; padding: 20px; font-family: Arial, sans-serif; color: #333; width: 800px;">
-        <!-- ఈ భాగం జావాస్క్రిప్ట్ ద్వారా ఆటోమేటిక్ గా మీ PDF లాగా తయారవుతుంది -->
+    <div class="section">
+        <h2>💰 Expense Details</h2>
+        <label>Seed Cost (₹)</label> <input type="number" id="seed">
+        <label>Fertilizer Cost (₹)</label> <input type="number" id="fert">
+        <label>Labour Cost (₹)</label> <input type="number" id="labour">
+        <label>Pesticide Cost (₹)</label> <input type="number" id="pesticide">
+        <label>Irrigation Cost (₹)</label> <input type="number" id="irrigation">
+        <label>Tractor Cost (₹)</label> <input type="number" id="tractor">
+        <label>Diesel Cost (₹)</label> <input type="number" id="diesel">
+        <label>Other Expenses (₹)</label> <input type="number" id="other">
+    </div>
+
+    <div class="section">
+        <h2>📈 Income Details</h2>
+        <label>Total Yield (Quintals)</label> <input type="number" id="yield">
+        <label>Price Per Quintal (₹)</label> <input type="number" id="price">
+    </div>
+
+    <!-- యాక్షన్ బటన్స్ -->
+    <div id="actionButtons" class="buttons-row">
+        <button onclick="calculateExpense()">💰 Calculate</button>
+        <button class="btn-pdf" onclick="downloadPDF()">📥 Download PDF</button>
+        <button class="btn-reset" onclick="resetForm()">🔄 Reset</button>
+    </div>
+
+    <!-- 💰 డ్యాష్ బోర్డ్ కార్డ్స్ -->
+    <div class="dashboard">
+        <div class="card"><h3 id="lblExp">💰 Expense</h3><h2 id="expenseCard">₹0</h2></div>
+        <div class="card"><h3 id="lblInc">💵 Income</h3><h2 id="incomeCard">₹0</h2></div>
+        <div class="card"><h3 id="lblProf">📈 Profit</h3><h2 id="profitCard">₹0</h2></div>
+        <div class="card"><h3 id="lblAcre">🌾 Cost/Acre</h3><h2 id="acreCard">₹0</h2></div>
+    </div>
+
+    <div class="chart-container">
+        <h2>📊 Expense Chart</h2>
+        <canvas id="expenseChart"></canvas>
     </div>
 
 </div>
 
 <script>
     let liveChart = null;
-    let printChart = null;
     let telugu = false;
 
     const dict = {
@@ -151,7 +142,6 @@
         const totalIncome = yieldQty * price;
         const perAcre = totalExpense / acres;
         const profitLoss = totalIncome - totalExpense;
-        const color = profitLoss >= 0 ? "green" : "red";
 
         document.getElementById("expenseCard").textContent = "₹ " + totalExpense.toLocaleString();
         document.getElementById("incomeCard").textContent = "₹ " + totalIncome.toLocaleString();
@@ -160,86 +150,9 @@
 
         if(liveChart) liveChart.destroy();
         const ctxLive = document.getElementById("expenseChart").getContext("2d");
-        liveChart = new Chart(ctxLive, {
-            type: "pie",
-            data: {
-                labels: ["Seed", "Fertilizer", "Labour", "Pesticide", "Irrigation", "Tractor", "Diesel", "Other"],
-                datasets: [{ data: [seed, fert, labour, pesticide, irrigation, tractor, diesel, other], backgroundColor: ['#8d6e63', '#4caf50', '#ff9800', '#f44336', '#2196f3', '#9c27b0', '#607d8b', '#ffeb3b'] }]
-            },
-            options: { responsive: true, plugins: { legend: { position: "bottom" } } }
-        });
-
-        const l = telugu ? dict.te : dict.en;
-        const printHTML = `
-            <h1 style="text-align:center; color: green; font-size: 24px; margin-bottom: 20px;">${l.title}</h1>
-            
-            <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.fDetails}</h2>
-            <div style="font-size: 16px; line-height: 1.8; margin-bottom: 20px;">
-                <span style="color: #666;">${l.fName}:</span> <strong>${document.getElementById("farmerName").value || "-"}</strong><br>
-                <span style="color: #666;">${l.vil}:</span> <strong>${document.getElementById("village").value || "-"}</strong><br>
-                <span style="color: #666;">${l.crop}:</span> <strong>${document.getElementById("crop").value || "-"}</strong><br>
-                <span style="color: #666;">${l.acres}:</span> <strong>${acres}</strong><br>
-                <span style="color: #666;">${l.date}:</span> <strong>${document.getElementById("date").value || "-"}</strong>
-            </div>
-
-            <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.eDetails}</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 16px; margin-bottom: 20px;">
-                <div><span style="color: #666;">${l.seed}:</span><br><strong>${seed}</strong></div>
-                <div><span style="color: #666;">${l.fert}:</span><br><strong>${fert}</strong></div>
-                <div><span style="color: #666;">${l.lab}:</span><br><strong>${labour}</strong></div>
-                <div><span style="color: #666;">${l.pest}:</span><br><strong>${pesticide}</strong></div>
-                <div><span style="color: #666;">${l.irr}:</span><br><strong>${irrigation}</strong></div>
-                <div><span style="color: #666;">${l.trac}:</span><br><strong>${tractor}</strong></div>
-                <div><span style="color: #666;">${l.dies}:</span><br><strong>${diesel}</strong></div>
-                <div><span style="color: #666;">${l.oth}:</span><br><strong>${other}</strong></div>
-            </div>
-
-            <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.iDetails}</h2>
-            <div style="font-size: 16px; line-height: 1.8; margin-bottom: 20px;">
-                <span style="color: #666;">${l.yld}:</span><br><strong>${yieldQty}</strong><br>
-                <span style="color: #666;">${l.prc}:</span><br><strong>${price}</strong>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
-                <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
-                    <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.exp}</h3>
-                    <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalExpense.toLocaleString()}</h2>
-                </div>
-                <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
-                    <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.inc}</h3>
-                    <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalIncome.toLocaleString()}</h2>
-                </div>
-                <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
-                    <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.prof}</h3>
-                    <h2 style="margin: 0; font-size: 20px; color: ${color};">₹ ${profitLoss.toLocaleString()}</h2>
-                </div>
-                <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
-                    <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.cpa}</h3>
-                    <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${perAcre.toFixed(2)}</h2>
-                </div>
-            </div>
-
-            <div class="html2pdf__page-break"></div>
-            
-            <h2 style="color: #333; font-size: 20px; text-align: center; margin-top: 20px; margin-bottom: 10px;">${l.chrt}</h2>
-            <div style="text-align: center; margin-bottom: 30px;">
-                <canvas id="printExpenseChart" style="max-width: 400px; margin: auto;"></canvas>
-            </div>
-
-            <h2 style="color: green; font-size: 22px; text-align: center; margin-bottom: 15px;">${l.rep}</h2>
-            <div style="font-size: 18px; line-height: 1.8; text-align: center;">
-                ${l.tExp} : ₹ ${totalExpense.toLocaleString()}<br>
-                ${l.cpa} : ₹ ${perAcre.toFixed(2)}<br>
-                ${l.tInc} : ₹ ${totalIncome.toLocaleString()}<br>
-                <strong style="color: ${color}; font-size: 22px;">${l.pL} : ₹ ${profitLoss.toLocaleString()}</strong>
-            </div>
-        `;
         
-        document.getElementById("printReportSection").innerHTML = printHTML;
-
-        if(printChart) printChart.destroy();
-        const ctxPrint = document.getElementById("printExpenseChart").getContext("2d");
-        printChart = new Chart(ctxPrint, {
+        // యానిమేషన్ లేకుండా చార్ట్ క్రియేట్ చేయడం వల్ల PDF లోకి ఎంటీ చార్ట్ రాకుండా ఉంటుంది
+        liveChart = new Chart(ctxLive, {
             type: "pie",
             data: {
                 labels: ["Seed", "Fertilizer", "Labour", "Pesticide", "Irrigation", "Tractor", "Diesel", "Other"],
@@ -251,16 +164,114 @@
         saveData();
     }
 
+    // 📥 ఈ కొత్త పద్ధతి వల్ల స్క్రీన్ అస్సలు కదలదు, కట్ అవ్వదు. ఎంటీ డేటా రాదు.
     function downloadPDF() {
         calculateExpense(); 
-        const pdfBtn = document.querySelector(".btn-pdf");
         
-        // బటన్ టెక్స్ట్ మార్చడం
+        const pdfBtn = document.querySelector(".btn-pdf");
         pdfBtn.textContent = "⏳ Please Wait...";
         pdfBtn.disabled = true;
 
         setTimeout(() => {
-            const printArea = document.getElementById("printReportSection");
+            const seed = Number(document.getElementById("seed").value) || 0;
+            const fert = Number(document.getElementById("fert").value) || 0;
+            const labour = Number(document.getElementById("labour").value) || 0;
+            const pesticide = Number(document.getElementById("pesticide").value) || 0;
+            const irrigation = Number(document.getElementById("irrigation").value) || 0;
+            const tractor = Number(document.getElementById("tractor").value) || 0;
+            const diesel = Number(document.getElementById("diesel").value) || 0;
+            const other = Number(document.getElementById("other").value) || 0;
+            const acres = Number(document.getElementById("acres").value) || 1;
+            const yieldQty = Number(document.getElementById("yield").value) || 0;
+            const price = Number(document.getElementById("price").value) || 0;
+
+            const totalExpense = seed + fert + labour + pesticide + irrigation + tractor + diesel + other;
+            const totalIncome = yieldQty * price;
+            const perAcre = totalExpense / acres;
+            const profitLoss = totalIncome - totalExpense;
+            const color = profitLoss >= 0 ? "green" : "red";
+            
+            const l = telugu ? dict.te : dict.en;
+            
+            // చార్ట్ ని ఫోటో (Image) లాగా తీసుకోవడం
+            const chartImg = document.getElementById("expenseChart").toDataURL("image/png");
+
+            // రిపోర్ట్ HTML నిర్మాణం
+            const printHTML = `
+                <div style="background: #fff; padding: 20px; font-family: Arial, sans-serif; color: #333; width: 800px;">
+                    <h1 style="text-align:center; color: green; font-size: 24px; margin-bottom: 20px;">${l.title}</h1>
+                    
+                    <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.fDetails}</h2>
+                    <div style="font-size: 16px; line-height: 1.8; margin-bottom: 20px;">
+                        <span style="color: #666;">${l.fName}:</span> <strong>${document.getElementById("farmerName").value || "-"}</strong><br>
+                        <span style="color: #666;">${l.vil}:</span> <strong>${document.getElementById("village").value || "-"}</strong><br>
+                        <span style="color: #666;">${l.crop}:</span> <strong>${document.getElementById("crop").value || "-"}</strong><br>
+                        <span style="color: #666;">${l.acres}:</span> <strong>${acres}</strong><br>
+                        <span style="color: #666;">${l.date}:</span> <strong>${document.getElementById("date").value || "-"}</strong>
+                    </div>
+
+                    <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.eDetails}</h2>
+                    <div style="margin-bottom: 20px;">
+                        <div style="width: 48%; display: inline-block; margin-bottom: 15px;"><span style="color: #666;">${l.seed}:</span><br><strong>${seed}</strong></div>
+                        <div style="width: 48%; display: inline-block; margin-bottom: 15px;"><span style="color: #666;">${l.fert}:</span><br><strong>${fert}</strong></div>
+                        <div style="width: 48%; display: inline-block; margin-bottom: 15px;"><span style="color: #666;">${l.lab}:</span><br><strong>${labour}</strong></div>
+                        <div style="width: 48%; display: inline-block; margin-bottom: 15px;"><span style="color: #666;">${l.pest}:</span><br><strong>${pesticide}</strong></div>
+                        <div style="width: 48%; display: inline-block; margin-bottom: 15px;"><span style="color: #666;">${l.irr}:</span><br><strong>${irrigation}</strong></div>
+                        <div style="width: 48%; display: inline-block; margin-bottom: 15px;"><span style="color: #666;">${l.trac}:</span><br><strong>${tractor}</strong></div>
+                        <div style="width: 48%; display: inline-block; margin-bottom: 15px;"><span style="color: #666;">${l.dies}:</span><br><strong>${diesel}</strong></div>
+                        <div style="width: 48%; display: inline-block; margin-bottom: 15px;"><span style="color: #666;">${l.oth}:</span><br><strong>${other}</strong></div>
+                    </div>
+
+                    <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.iDetails}</h2>
+                    <div style="font-size: 16px; line-height: 1.8; margin-bottom: 20px;">
+                        <span style="color: #666;">${l.yld}:</span><br><strong>${yieldQty}</strong><br>
+                        <span style="color: #666;">${l.prc}:</span><br><strong>${price}</strong>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; margin-bottom: 15px;">
+                            <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.exp}</h3>
+                            <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalExpense.toLocaleString()}</h2>
+                        </div>
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; margin-bottom: 15px;">
+                            <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.inc}</h3>
+                            <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalIncome.toLocaleString()}</h2>
+                        </div>
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; margin-bottom: 15px;">
+                            <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.prof}</h3>
+                            <h2 style="margin: 0; font-size: 20px; color: ${color};">₹ ${profitLoss.toLocaleString()}</h2>
+                        </div>
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; margin-bottom: 15px;">
+                            <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.cpa}</h3>
+                            <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${perAcre.toFixed(2)}</h2>
+                        </div>
+                    </div>
+
+                    <div class="html2pdf__page-break"></div>
+                    
+                    <h2 style="color: #333; font-size: 20px; text-align: center; margin-top: 20px; margin-bottom: 10px;">${l.chrt}</h2>
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <img src="${chartImg}" style="max-width: 400px; height: auto; margin: auto;">
+                    </div>
+
+                    <h2 style="color: green; font-size: 22px; text-align: center; margin-bottom: 15px;">${l.rep}</h2>
+                    <div style="font-size: 18px; line-height: 1.8; text-align: center;">
+                        ${l.tExp} : ₹ ${totalExpense.toLocaleString()}<br>
+                        ${l.cpa} : ₹ ${perAcre.toFixed(2)}<br>
+                        ${l.tInc} : ₹ ${totalIncome.toLocaleString()}<br>
+                        <strong style="color: ${color}; font-size: 22px;">${l.pL} : ₹ ${profitLoss.toLocaleString()}</strong>
+                    </div>
+                </div>
+            `;
+
+            // బ్యాక్ గ్రౌండ్ లో టెంపరరీగా డేటాని సృష్టించి PDF చేయడం
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = printHTML;
+            tempDiv.style.position = "absolute";
+            tempDiv.style.left = "-9999px";
+            tempDiv.style.top = "0";
+            document.body.appendChild(tempDiv);
+
             const opt = {
                 margin: 15, 
                 filename: 'Farmer_Expense_Report.pdf',
@@ -270,16 +281,12 @@
                 pagebreak: { mode: ['css', 'legacy'] }
             };
 
-            // PDF సేవ్ అవ్వడం
-            html2pdf().set(opt).from(printArea).save();
-            
-            // ఆండ్రాయిడ్ యాప్స్ కోసం సైలెంట్ గా బటన్ నార్మల్ అవ్వడానికి టైమర్ (స్క్రీన్ అస్సలు కదలదు)
-            setTimeout(() => {
+            html2pdf().set(opt).from(tempDiv).save().then(() => {
+                document.body.removeChild(tempDiv); // పని పూర్తవ్వగానే క్లీన్ చేయడం
                 pdfBtn.textContent = "📥 Download PDF";
                 pdfBtn.disabled = false;
-            }, 3000);
-
-        }, 500);
+            });
+        }, 500); // చార్ట్ గీయడానికి అరగ సెకను సమయం
     }
 
     function saveData(){
@@ -293,7 +300,7 @@
     }
 
     function resetForm(){
-        if(!confirm("Are you sure you want to reset all data?")) return;
+        if(!confirm("Are you sure you want to reset all data? / మీ డేటా మొత్తం చెరిపేయాలనుకుంటున్నారా?")) return;
         const ids = ["farmerName", "village", "crop", "date", "acres", "seed", "fert", "labour", "pesticide", "irrigation", "tractor", "diesel", "other", "yield", "price"];
         ids.forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; });
         document.getElementById("crop").selectedIndex = 0;
@@ -335,7 +342,7 @@
         }
     }
 
-    // 🛑 బ్యాక్ బటన్ నొక్కినప్పుడు యాప్ క్లోజ్ అవ్వకుండా అలర్ట్ ఇవ్వడానికి లాజిక్
+    // 🛑 బ్యాక్ బటన్ నొక్కినప్పుడు యాప్ వెంటనే క్లోజ్ అవ్వకుండా సెక్యూరిటీ
     window.onload = function(){ 
         loadData(); 
         window.history.pushState({ page: 1 }, "", "");
