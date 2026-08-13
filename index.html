@@ -6,7 +6,7 @@
     <title>🌾 Smart Farmer Expense Manager</title>
 
     <style>
-        /* CSS (డిజైన్) ఇక్కడే ఉంది */
+        /* CSS (డిజైన్) */
         * {
             margin: 0;
             padding: 0;
@@ -59,23 +59,6 @@
             font-size: 16px;
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            background: green;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background: #0b6b0b;
-        }
-
         .dashboard {
             display: flex;
             flex-wrap: wrap;
@@ -96,6 +79,7 @@
         .card h3 { color: #2e7d32; font-size: 16px; }
         .card h2 { margin-top: 8px; font-size: 20px; }
 
+        /* 3 బటన్స్ కి తగ్గట్టు డిజైన్ మార్చాను */
         .buttons-row {
             display: flex;
             flex-wrap: wrap;
@@ -104,12 +88,22 @@
         }
 
         .buttons-row button {
-            flex: 1 1 calc(50% - 10px);
-            margin-top: 0;
+            flex: 1 1 30%; /* 3 బటన్స్ సమానంగా రావడానికి */
+            padding: 12px;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .buttons-row button:hover {
+            background: #0b6b0b;
         }
 
         .btn-print { background: #ff9800; }
-        .btn-pdf { background: #f44336; }
         .btn-reset { background: #9e9e9e; }
 
         .chart-container {
@@ -149,6 +143,9 @@
         @media(max-width: 600px) {
             .card {
                 flex: 1 1 100%;
+            }
+            .buttons-row button {
+                flex: 1 1 100%; /* మొబైల్ లో బటన్స్ ఒకదాని కింద ఒకటి రావడానికి */
             }
             #langBtn {
                 float: none;
@@ -239,10 +236,10 @@
         <input type="number" id="price">
     </div>
 
+    <!-- PDF బటన్ తొలగించబడింది -->
     <div id="actionButtons" class="buttons-row">
         <button onclick="calculateExpense()">💰 Calculate</button>
         <button class="btn-print" onclick="printReport()">📄 Print</button>
-        <button class="btn-pdf" onclick="downloadPDF()">📥 PDF</button>
         <button class="btn-reset" onclick="resetForm()">🔄 Reset</button>
     </div>
 
@@ -258,12 +255,11 @@
 
 </div>
 
-<!-- లైబ్రరీలు -->
+<!-- కేవలం Chart.js మాత్రమే ఉంచాను, PDF లైబ్రరీ తీసేసాను -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-    /* JavaScript (లాజిక్) ఇక్కడే ఉంది */
+    /* JavaScript (లాజిక్) */
     let chart = null;
     let telugu = false;
 
@@ -324,33 +320,11 @@
         });
     }
 
-    function printReport(){ window.print(); }
-
-    function downloadPDF(){
-        calculateExpense();
-        
-        const element = document.getElementById("mainContainer");
-        const actionButtons = document.getElementById("actionButtons");
-        const langBtn = document.getElementById("langBtn");
-        
-        if(actionButtons) actionButtons.style.display = "none";
-        if(langBtn) langBtn.style.display = "none";
-
-        setTimeout(() => {
-            const options = {
-                margin: 10,
-                filename: "Farmer_Expense_Report.pdf",
-                image: { type: "jpeg", quality: 1 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-            };
-
-            html2pdf().set(options).from(element).save().then(() => {
-                if(actionButtons) actionButtons.style.display = "flex";
-                if(langBtn) langBtn.style.display = "block";
-            });
-        }, 500); 
+    function printReport(){ 
+        window.print(); 
     }
+
+    // PDF ఫంక్షన్ పూర్తిగా తొలగించబడింది
 
     function saveData(){
         const ids = ["farmerName", "village", "crop", "date", "acres", "seed", "fert", "labour", "pesticide", "irrigation", "tractor", "diesel", "other", "yield", "price"];
