@@ -22,7 +22,7 @@
         
         .dashboard { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
         .card { flex: 1 1 calc(50% - 15px); background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; }
-        .card h3 { color: #2e7d32; font-size: 16px; }
+        .card h3 { color: #2e7d32; font-size: 16px; margin-bottom: 5px; }
         .card h2 { margin-top: 8px; font-size: 20px; }
         
         .buttons-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
@@ -64,13 +64,6 @@
             <label>Date</label> <input type="date" id="date">
         </div>
 
-        <div class="dashboard">
-            <div class="card"><h3>💰 Expense</h3><h2 id="expenseCard">₹0</h2></div>
-            <div class="card"><h3>💵 Income</h3><h2 id="incomeCard">₹0</h2></div>
-            <div class="card"><h3>📈 Profit</h3><h2 id="profitCard">₹0</h2></div>
-            <div class="card"><h3>🌾 Cost/Acre</h3><h2 id="acreCard">₹0</h2></div>
-        </div>
-
         <div class="section">
             <h2>💰 Expense Details</h2>
             <label>Seed Cost (₹)</label> <input type="number" id="seed">
@@ -89,11 +82,19 @@
             <label>Price Per Quintal (₹)</label> <input type="number" id="price">
         </div>
 
-        <!-- ప్రింట్ కి బదులుగా PDF బటన్ పెట్టాను -->
+        <!-- యాక్షన్ బటన్స్ (Calculate, PDF, Reset) -->
         <div id="actionButtons" class="buttons-row">
             <button onclick="calculateExpense()">💰 Calculate</button>
             <button class="btn-pdf" onclick="downloadPDF()">📥 Download PDF</button>
             <button class="btn-reset" onclick="resetForm()">🔄 Reset</button>
+        </div>
+
+        <!-- 💰 డ్యాష్ బోర్డ్ కార్డ్స్ ను బటన్స్ కిందకు మార్చబడింది -->
+        <div class="dashboard">
+            <div class="card"><h3 id="lblExp">💰 Expense</h3><h2 id="expenseCard">₹0</h2></div>
+            <div class="card"><h3 id="lblInc">💵 Income</h3><h2 id="incomeCard">₹0</h2></div>
+            <div class="card"><h3 id="lblProf">📈 Profit</h3><h2 id="profitCard">₹0</h2></div>
+            <div class="card"><h3 id="lblAcre">🌾 Cost/Acre</h3><h2 id="acreCard">₹0</h2></div>
         </div>
 
         <div class="chart-container">
@@ -171,7 +172,7 @@
             options: { responsive: true, plugins: { legend: { position: "bottom" } } }
         });
 
-        // 3. 📄 మీరు అడిగిన అచ్చమైన PDF రిపోర్ట్ డిజైన్ (Hidden Area)
+        // 3. 📄 అచ్చమైన PDF రిపోర్ట్ డిజైన్ (Hidden Area)
         const l = telugu ? dict.te : dict.en;
         const printHTML = `
             <h1 style="text-align:center; color: green; font-size: 24px; margin-bottom: 20px;">${l.title}</h1>
@@ -244,20 +245,17 @@
         saveData();
     }
 
-    // 📥 ఈ ఫంక్షన్ మొబైల్ యాప్‌లో పని చేస్తుంది! (PDF డౌన్‌లోడ్)
     function downloadPDF() {
-        calculateExpense(); // ముందుగా డేటా అప్డేట్ చేయడం
-        
+        calculateExpense(); 
         const inputArea = document.getElementById("inputSection");
         const printArea = document.getElementById("printReportSection");
         
-        // 1 సెకను పాటు ఇన్పుట్ ఫారమ్ దాచిపెట్టి, అచ్చమైన రిపోర్ట్ ని బయటకి తీయడం
         inputArea.style.display = "none";
         printArea.style.display = "block";
         
         setTimeout(() => {
             const opt = {
-                margin: 15, // పేజీకి చుట్టూ ఖాళీ జాగా
+                margin: 15, 
                 filename: 'Farmer_Expense_Report.pdf',
                 image: { type: 'jpeg', quality: 1 },
                 html2canvas: { scale: 2, useCORS: true },
@@ -265,7 +263,6 @@
                 pagebreak: { mode: ['css', 'legacy'] }
             };
 
-            // PDF సేవ్ అయ్యాక తిరిగి మామూలు స్క్రీన్ కి రావడం
             html2pdf().set(opt).from(printArea).save().then(() => {
                 inputArea.style.display = "block";
                 printArea.style.display = "none";
@@ -307,6 +304,10 @@
             labels[6].textContent = dict.te.fert; labels[7].textContent = dict.te.lab; labels[8].textContent = dict.te.pest;
             labels[9].textContent = dict.te.irr; labels[10].textContent = dict.te.trac; labels[11].textContent = dict.te.dies;
             labels[12].textContent = dict.te.oth; labels[13].textContent = dict.te.yld; labels[14].textContent = dict.te.prc;
+            document.getElementById("lblExp").textContent = dict.te.exp;
+            document.getElementById("lblInc").textContent = dict.te.inc;
+            document.getElementById("lblProf").textContent = dict.te.prof;
+            document.getElementById("lblAcre").textContent = dict.te.cpa;
         }else{
             document.getElementById("langBtn").textContent = "🌐 తెలుగు";
             document.getElementById("title").textContent = dict.en.title;
@@ -315,6 +316,10 @@
             labels[6].textContent = dict.en.fert; labels[7].textContent = dict.en.lab; labels[8].textContent = dict.en.pest;
             labels[9].textContent = dict.en.irr; labels[10].textContent = dict.en.trac; labels[11].textContent = dict.en.dies;
             labels[12].textContent = dict.en.oth; labels[13].textContent = dict.en.yld; labels[14].textContent = dict.en.prc;
+            document.getElementById("lblExp").textContent = dict.en.exp;
+            document.getElementById("lblInc").textContent = dict.en.inc;
+            document.getElementById("lblProf").textContent = dict.en.prof;
+            document.getElementById("lblAcre").textContent = dict.en.cpa;
         }
     }
 
