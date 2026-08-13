@@ -105,7 +105,7 @@
 
         <div id="actionButtons" class="buttons-row">
             <button onclick="calculateExpense()">💰 Calculate</button>
-            <button class="btn-pdf" onclick="generateReport()">📤 Generate Report</button>
+            <button class="btn-pdf" onclick="generateReport()">📸 Generate Report</button>
             <button class="btn-reset" onclick="resetForm()">🔄 Reset</button>
         </div>
 
@@ -125,14 +125,18 @@
     <!-- 📄 2. టెంపరరీ రెండరింగ్ స్క్రీన్ (ఇది వెనుక జరుగుతుంది) -->
     <div id="printReportSection" style="display: none; padding: 10px;"></div>
 
-    <!-- 🖼️ 3. రిపోర్ట్ రిజల్ట్ స్క్రీన్ (ఇక్కడ లాంగ్ ప్రెస్ చేసి షేర్ చేసుకోవచ్చు) -->
+    <!-- 🖼️ 3. రిపోర్ట్ రిజల్ట్ స్క్రీన్ (ఇక్కడ షేర్ బటన్ ఉంటుంది) -->
     <div id="resultScreen" style="display: none; text-align: center;">
-        <div style="background: #e8f5e9; color: #2e7d32; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #4caf50; font-size: 16px; line-height: 1.5;">
-            💡 <b>గమనిక:</b> కింది రిపోర్ట్ ఫోటో మీద <b>గట్టిగా నొక్కి పట్టి (Long Press)</b>...<br>వచ్చే ఆప్షన్లలో <b>'Share Image'</b> నొక్కి వాట్సాప్‌లో పంపుకోండి, లేదా <b>'Save Image'</b> నొక్కి ఫోన్‌లో దాచుకోండి.
+        <div style="background: #e8f5e9; color: #2e7d32; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #4caf50; font-size: 16px; line-height: 1.5;">
+            💡 <b>గమనిక:</b> కింది "Share" బటన్ నొక్కి వాట్సాప్‌లో పంపుకోండి.<br>ఒకవేళ మీ ఫోన్‌లో బటన్ పనిచేయకపోతే.. ఈ రిపోర్ట్‌ను సింపుల్‌గా <b>స్క్రీన్ షాట్ (Screenshot)</b> తీసుకోండి!
         </div>
         
-        <button onclick="closeReport()" style="padding: 12px 25px; background: #f44336; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">🔙 మళ్లీ యాప్‌లోకి వెళ్లండి</button>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+            <button onclick="shareImage()" style="padding: 12px 20px; background: #25D366; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">📲 Share / షేర్</button>
+            <button onclick="closeReport()" style="padding: 12px 20px; background: #f44336; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">🔙 వెనక్కి</button>
+        </div>
         
+        <!-- రిపోర్ట్ ఫోటో ఇక్కడ కనిపిస్తుంది -->
         <img id="resultImage" style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid #ddd; margin-bottom: 30px;" />
     </div>
 
@@ -141,7 +145,8 @@
 <script>
     let liveChart = null;
     let telugu = false;
-    let currentView = 'input'; // Back button సెక్యూరిటీ కోసం
+    let currentView = 'input'; 
+    let currentImageBase64 = ""; // షేర్ చేయడానికి ఇమేజ్ డేటా
 
     const dict = {
         en: { 
@@ -200,7 +205,7 @@
         saveData();
     }
 
-    // 🚀 కొత్త సూపర్ ఫంక్షన్ (ఎర్రర్స్ రావు, డైరెక్ట్ ఇమేజ్ వస్తుంది)
+    // 🚀 రిపోర్ట్ జనరేట్ చేసే ఫంక్షన్
     function generateReport() {
         calculateExpense(); 
         
@@ -210,7 +215,7 @@
         const resultScreen = document.getElementById("resultScreen");
 
         overlay.style.display = "flex";
-        window.scrollTo(0, 0); // ఎంటీ రాకుండా టాప్ కి వెళ్ళడం
+        window.scrollTo(0, 0); 
 
         setTimeout(() => {
             const seed = Number(document.getElementById("seed").value) || 0;
@@ -233,7 +238,6 @@
             
             const l = telugu ? dict.te : dict.en;
 
-            // ఇమేజ్ రిపోర్ట్ యొక్క అందమైన డిజైన్ (800px వెడల్పుతో అస్సలు కట్ అవ్వదు)
             printArea.innerHTML = `
                 <div id="reportContentBox" style="background: #ffffff; padding: 40px; font-family: Arial, sans-serif; color: #333; width: 800px; margin: 0 auto; border: 2px solid #ddd; border-radius: 10px;">
                     <h1 style="text-align:center; color: green; font-size: 32px; margin-bottom: 25px;">${l.title}</h1>
@@ -284,11 +288,6 @@
                         </div>
                     </div>
 
-                    <h2 style="color: #333; font-size: 24px; text-align: center; margin-top: 20px; margin-bottom: 20px;">${l.chrt}</h2>
-                    <div style="text-align: center; margin-bottom: 40px;">
-                        <canvas id="printExpenseChart" width="400" height="400" style="max-width: 400px; margin: auto;"></canvas>
-                    </div>
-
                     <h2 style="color: green; font-size: 26px; text-align: center; margin-bottom: 15px;">${l.rep}</h2>
                     <div style="font-size: 20px; line-height: 2; text-align: center; background:#f9fff9; padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
                         ${l.tExp} : ₹ ${totalExpense.toLocaleString()}<br>
@@ -302,35 +301,44 @@
             inputArea.style.display = "none";
             printArea.style.display = "block";
 
-            // చార్ట్ మళ్లీ గీయడం (రిపోర్ట్ కోసం)
-            const ctxPrint = document.getElementById("printExpenseChart").getContext("2d");
-            new Chart(ctxPrint, {
-                type: "pie",
-                data: {
-                    labels: ["Seed", "Fertilizer", "Labour", "Pesticide", "Irrigation", "Tractor", "Diesel", "Other"],
-                    datasets: [{ data: [seed, fert, labour, pesticide, irrigation, tractor, diesel, other], backgroundColor: ['#8d6e63', '#4caf50', '#ff9800', '#f44336', '#2196f3', '#9c27b0', '#607d8b', '#ffeb3b'] }]
-                },
-                options: { responsive: false, animation: false, plugins: { legend: { position: "bottom", labels: { font: { size: 14 } } } } }
-            });
-
-            // రిపోర్ట్ క్రియేట్ చేయడం (HTML to High Quality Image)
+            // ఇమేజ్ రిపోర్ట్ క్రియేట్ చేయడం
             setTimeout(() => {
                 const reportBox = document.getElementById("reportContentBox");
                 html2canvas(reportBox, { scale: 2, useCORS: true }).then(canvas => {
                     const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    currentImageBase64 = imgData; // షేర్ చేయడానికి స్టోర్ చేస్తున్నాం
                     
-                    // సక్సెస్ అయ్యాక స్క్రీన్ మార్చడం
                     printArea.style.display = "none";
                     overlay.style.display = "none";
                     
                     document.getElementById("resultImage").src = imgData;
                     resultScreen.style.display = "block";
-                    currentView = 'result'; // అప్డేట్ స్టేట్
+                    currentView = 'result'; 
                     window.scrollTo(0, 0);
                 });
             }, 600); 
 
         }, 500); 
+    }
+
+    // 📲 షేర్ బటన్ నొక్కినప్పుడు పనిచేసే ఫంక్షన్
+    async function shareImage() {
+        try {
+            const res = await fetch(currentImageBase64);
+            const blob = await res.blob();
+            const file = new File([blob], "Farmer_Report.jpg", { type: "image/jpeg" });
+            
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    title: 'Smart Farmer Expense Report',
+                    files: [file]
+                });
+            } else {
+                alert("మీ యాప్‌లో డైరెక్ట్ షేర్ పనిచేయడం లేదు. దయచేసి రిపోర్ట్‌ను 'స్క్రీన్ షాట్ (Screenshot)' తీసుకోండి!");
+            }
+        } catch (error) {
+            alert("షేర్ చేయడంలో సమస్య వచ్చింది. దయచేసి రిపోర్ట్‌ను 'స్క్రీన్ షాట్ (Screenshot)' తీసుకోండి!");
+        }
     }
 
     // రిపోర్ట్ క్లోజ్ చేసి వెనక్కి రావడానికి
@@ -394,7 +402,7 @@
         }
     }
 
-    // 🛑 బ్యాక్ బటన్ సెక్యూరిటీ (యాప్ క్లోజ్ అవ్వకుండా & రిపోర్ట్ నుండి వెనక్కి రావడానికి)
+    // 🛑 బ్యాక్ బటన్ సెక్యూరిటీ
     window.onload = function(){ 
         loadData(); 
         window.history.pushState({ page: 'app' }, "", "");
@@ -402,7 +410,7 @@
 
     window.onpopstate = function(event) {
         if (currentView === 'result') {
-            closeReport(); // ఫోటో చూస్తున్నప్పుడు బ్యాక్ నొక్కితే ఫారమ్ కి వస్తుంది
+            closeReport(); 
             window.history.pushState({ page: 'app' }, "", ""); 
         } else {
             if(confirm("Are you sure you want to exit the app? / మీరు యాప్ నుండి బయటకు వెళ్లాలనుకుంటున్నారా?")) {
