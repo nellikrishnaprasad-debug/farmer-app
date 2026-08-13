@@ -54,14 +54,28 @@
             border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* 📄 PDF కోసం బ్యాక్‌గ్రౌండ్ రిపోర్ట్ డిజైన్ - అస్సలు కట్ అవ్వకుండా 1000 z-index */
+        #printReportSection {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 800px;
+            background: #fff;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #333;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
 
 <!-- ⏳ లోడింగ్ స్క్రీన్ -->
 <div id="loadingOverlay">
-    <div>⏳ PDF డౌన్‌లోడ్ అవుతోంది...</div>
-    <div style="font-size: 16px; font-weight: normal; margin-top: 10px; color: #ccc;">దయచేసి వేచి ఉండండి (Please wait)</div>
+    <div>⏳ రిపోర్ట్ సిద్ధమవుతోంది...</div>
+    <div style="font-size: 16px; font-weight: normal; margin-top: 10px; color: #ccc;">దయచేసి వేచి ఉండండి</div>
     <div class="spinner"></div>
 </div>
 
@@ -104,7 +118,7 @@
 
         <div id="actionButtons" class="buttons-row">
             <button onclick="calculateExpense()">💰 Calculate</button>
-            <button class="btn-pdf" onclick="downloadPDF()">📥 Download PDF</button>
+            <button class="btn-pdf" onclick="downloadPDF()">📤 Share / Download PDF</button>
             <button class="btn-reset" onclick="resetForm()">🔄 Reset</button>
         </div>
 
@@ -122,9 +136,7 @@
     </div>
 
     <!-- 📄 ప్రింట్ / PDF స్క్రీన్ (డీఫాల్ట్ గా దాగి ఉంటుంది) -->
-    <div id="printReportSection" style="display: none; background: #fff; padding: 20px; font-family: Arial, sans-serif; color: #333; max-width: 800px; margin: auto;">
-        <!-- ఈ భాగం జావాస్క్రిప్ట్ ద్వారా నింపబడుతుంది -->
-    </div>
+    <div id="printReportSection"></div>
 
 </div>
 
@@ -189,14 +201,15 @@
         saveData();
     }
 
+    // 🚀 పక్కాగా పనిచేసే సూపర్ ఫంక్షన్ (Empty డాక్యుమెంట్ రాదు & షేర్ అవుతుంది)
     function downloadPDF() {
         calculateExpense(); 
         
         const overlay = document.getElementById("loadingOverlay");
-        const inputArea = document.getElementById("inputSection");
         const printArea = document.getElementById("printReportSection");
 
-        overlay.style.display = "flex";
+        overlay.style.display = "flex"; // లోడింగ్ ఆన్
+        window.scrollTo(0, 0); // 🛑 ఎంటీ పేజీ రాకుండా ఉండటానికి ఇది అత్యంత ముఖ్యం!
 
         setTimeout(() => {
             const seed = Number(document.getElementById("seed").value) || 0;
@@ -250,27 +263,25 @@
                     <span style="color: #666;">${l.prc}:</span><br><strong>${price}</strong>
                 </div>
 
-                <!-- 🛑 ఇక్కడే మార్పు చేశాను: 4 బాక్సులు 2-లైన్లలో (Grid) వచ్చేలా మార్చాను. దీనివల్ల ఏదీ సగంలో కట్ అవ్వదు -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; page-break-inside: avoid;">
-                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; page-break-inside: avoid;">
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.exp}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalExpense.toLocaleString()}</h2>
                     </div>
-                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; page-break-inside: avoid;">
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.inc}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalIncome.toLocaleString()}</h2>
                     </div>
-                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; page-break-inside: avoid;">
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.prof}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: ${color};">₹ ${profitLoss.toLocaleString()}</h2>
                     </div>
-                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; page-break-inside: avoid;">
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.cpa}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${perAcre.toFixed(2)}</h2>
                     </div>
                 </div>
 
-                <!-- చార్ట్ సెకండ్ పేజీలో వస్తుంది -->
                 <div class="html2pdf__page-break"></div>
                 
                 <h2 style="color: #333; font-size: 20px; text-align: center; margin-top: 20px; margin-bottom: 10px;">${l.chrt}</h2>
@@ -287,24 +298,58 @@
                 </div>
             `;
 
-            inputArea.style.display = "none";
-            printArea.style.display = "block";
+            printArea.style.display = "block"; // లోడింగ్ ఓవర్లే వెనుక రిపోర్ట్ ఓపెన్ అవుతుంది
 
             setTimeout(() => {
                 const opt = {
                     margin: 15, filename: 'Farmer_Expense_Report.pdf',
-                    image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }, pagebreak: { mode: ['css', 'legacy'] }
+                    image: { type: 'jpeg', quality: 1 }, 
+                    html2canvas: { scale: 2, useCORS: true, scrollY: 0, windowY: 0 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }, 
+                    pagebreak: { mode: ['css', 'legacy'] }
                 };
 
-                html2pdf().set(opt).from(printArea).save().then(() => {
-                    inputArea.style.display = "block";
+                // 🛑 బ్లోబ్ (Blob) ఎర్రర్ రాకుండా నేరుగా యాప్ ద్వారా షేర్ / సేవ్‌కి పంపడం
+                html2pdf().set(opt).from(printArea).output('blob').then(function(blob) {
                     printArea.style.display = "none";
-                    overlay.style.display = "none"; 
+                    overlay.style.display = "none";
+
+                    const file = new File([blob], "Farmer_Expense_Report.pdf", { type: "application/pdf" });
+
+                    // 📲 ఆండ్రాయిడ్ ఒరిజినల్ షేర్ మెనూ ఓపెన్ అవుతుంది (వాట్సాప్ కోసం)
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                            title: 'Farmer Expense Report',
+                            files: [file]
+                        }).catch(err => {
+                            forceDownload(blob); // షేర్ పనిచేయకపోతే ఆల్టర్నేట్ డౌన్లోడ్
+                        });
+                    } else {
+                        forceDownload(blob);
+                    }
+                }).catch(err => {
+                    printArea.style.display = "none";
+                    overlay.style.display = "none";
+                    alert("System Error! Please try again.");
                 });
-            }, 500); 
+            }, 1000); 
 
         }, 500); 
+    }
+
+    // వెబ్ వ్యూ యాప్స్ లో ఆల్టర్నేట్ డౌన్లోడ్ (Base64 Method)
+    function forceDownload(blob) {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = function() {
+            const base64data = reader.result;
+            const a = document.createElement("a");
+            a.href = base64data;
+            a.download = "Farmer_Expense_Report.pdf";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
     }
 
     function saveData(){
@@ -360,6 +405,7 @@
         }
     }
 
+    // 🛑 బ్యాక్ బటన్ నొక్కినప్పుడు యాప్ వెంటనే క్లోజ్ అవ్వకుండా సెక్యూరిటీ
     window.onload = function(){ 
         loadData(); 
         window.history.pushState({ page: 1 }, "", "");
