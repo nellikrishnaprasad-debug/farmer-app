@@ -12,7 +12,7 @@
     <style>
         /* CSS (యాప్ డిజైన్) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #f2f8f2; padding: 15px; }
+        body { background: #f2f8f2; padding: 15px; overflow-x: hidden; }
         
         .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,.1); }
         h1 { text-align: center; color: green; margin-bottom: 20px; font-size: 22px; }
@@ -250,21 +250,21 @@
                     <span style="color: #666;">${l.prc}:</span><br><strong>${price}</strong>
                 </div>
 
-                <!-- 🛑 ఇక్కడే మార్పు చేశాను: page-break-inside: avoid; అనే కోడ్ ద్వారా ఈ 4 బాక్సులు ఎట్టిపరిస్థితుల్లోనూ కట్ అవ్వవు -->
-                <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; page-break-inside: avoid;">
-                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
+                <!-- 🛑 ఇక్కడే మార్పు చేశాను: 4 బాక్సులు 2-లైన్లలో (Grid) వచ్చేలా మార్చాను. దీనివల్ల ఏదీ సగంలో కట్ అవ్వదు -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; page-break-inside: avoid;">
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; page-break-inside: avoid;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.exp}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalExpense.toLocaleString()}</h2>
                     </div>
-                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; page-break-inside: avoid;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.inc}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalIncome.toLocaleString()}</h2>
                     </div>
-                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; page-break-inside: avoid;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.prof}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: ${color};">₹ ${profitLoss.toLocaleString()}</h2>
                     </div>
-                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9; page-break-inside: avoid;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.cpa}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${perAcre.toFixed(2)}</h2>
                     </div>
@@ -300,7 +300,7 @@
                 html2pdf().set(opt).from(printArea).save().then(() => {
                     inputArea.style.display = "block";
                     printArea.style.display = "none";
-                    overlay.style.display = "none"; // లోడింగ్ స్క్రీన్ ఆఫ్
+                    overlay.style.display = "none"; 
                 });
             }, 500); 
 
