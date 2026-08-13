@@ -55,6 +55,12 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* ప్రింట్ ఆప్షన్ (PDF సేవ్ కోసం) */
+        @media print {
+            body * { visibility: hidden; }
+            #resultImage { visibility: visible; position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; }
+            #inputSection, .buttons-row, .note-box, .btn-action { display: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -125,15 +131,17 @@
     <!-- 📄 2. టెంపరరీ రెండరింగ్ స్క్రీన్ (ఇది వెనుక జరుగుతుంది) -->
     <div id="printReportSection" style="display: none; padding: 10px;"></div>
 
-    <!-- 🖼️ 3. రిపోర్ట్ రిజల్ట్ స్క్రీన్ (ఇక్కడ షేర్ బటన్ ఉంటుంది) -->
+    <!-- 🖼️ 3. రిపోర్ట్ రిజల్ట్ స్క్రీన్ (ఇక్కడ లాస్ట్ ఫైనల్ ఆప్షన్స్ ఉంటాయి) -->
     <div id="resultScreen" style="display: none; text-align: center;">
-        <div style="background: #e8f5e9; color: #2e7d32; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #4caf50; font-size: 16px; line-height: 1.5;">
-            💡 <b>గమనిక:</b> కింది "Share" బటన్ నొక్కి వాట్సాప్‌లో పంపుకోండి.<br>ఒకవేళ మీ ఫోన్‌లో బటన్ పనిచేయకపోతే.. ఈ రిపోర్ట్‌ను సింపుల్‌గా <b>స్క్రీన్ షాట్ (Screenshot)</b> తీసుకోండి!
+        
+        <div class="note-box" style="background: #e8f5e9; color: #2e7d32; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #4caf50; font-size: 15px; line-height: 1.5;">
+            <b>💡 చిట్కా:</b> కింది <b>"WhatsApp"</b> బటన్ నొక్కి వివరాలను నేరుగా పంపుకోండి. ఈ ఫోటోను పంపాలంటే సింపుల్‌గా <b>Screenshot (స్క్రీన్ షాట్)</b> తీసుకోండి!
         </div>
         
-        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-            <button onclick="shareImage()" style="padding: 12px 20px; background: #25D366; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">📲 Share / షేర్</button>
-            <button onclick="closeReport()" style="padding: 12px 20px; background: #f44336; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">🔙 వెనక్కి</button>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 25px;">
+            <button class="btn-action" onclick="shareWhatsAppText()" style="padding: 12px 15px; background: #25D366; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1 1 45%;">💬 WhatsApp</button>
+            <button class="btn-action" onclick="window.print()" style="padding: 12px 15px; background: #0288d1; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1 1 45%;">🖨️ Print/Save</button>
+            <button class="btn-action" onclick="closeReport()" style="padding: 12px 15px; background: #f44336; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; flex: 1 1 100%; margin-top: 5px;">🔙 వెనక్కి</button>
         </div>
         
         <!-- రిపోర్ట్ ఫోటో ఇక్కడ కనిపిస్తుంది -->
@@ -146,7 +154,6 @@
     let liveChart = null;
     let telugu = false;
     let currentView = 'input'; 
-    let currentImageBase64 = ""; // షేర్ చేయడానికి ఇమేజ్ డేటా
 
     const dict = {
         en: { 
@@ -301,12 +308,10 @@
             inputArea.style.display = "none";
             printArea.style.display = "block";
 
-            // ఇమేజ్ రిపోర్ట్ క్రియేట్ చేయడం
             setTimeout(() => {
                 const reportBox = document.getElementById("reportContentBox");
                 html2canvas(reportBox, { scale: 2, useCORS: true }).then(canvas => {
                     const imgData = canvas.toDataURL('image/jpeg', 1.0);
-                    currentImageBase64 = imgData; // షేర్ చేయడానికి స్టోర్ చేస్తున్నాం
                     
                     printArea.style.display = "none";
                     overlay.style.display = "none";
@@ -321,27 +326,37 @@
         }, 500); 
     }
 
-    // 📲 షేర్ బటన్ నొక్కినప్పుడు పనిచేసే ఫంక్షన్
-    async function shareImage() {
-        try {
-            const res = await fetch(currentImageBase64);
-            const blob = await res.blob();
-            const file = new File([blob], "Farmer_Report.jpg", { type: "image/jpeg" });
-            
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({
-                    title: 'Smart Farmer Expense Report',
-                    files: [file]
-                });
-            } else {
-                alert("మీ యాప్‌లో డైరెక్ట్ షేర్ పనిచేయడం లేదు. దయచేసి రిపోర్ట్‌ను 'స్క్రీన్ షాట్ (Screenshot)' తీసుకోండి!");
-            }
-        } catch (error) {
-            alert("షేర్ చేయడంలో సమస్య వచ్చింది. దయచేసి రిపోర్ట్‌ను 'స్క్రీన్ షాట్ (Screenshot)' తీసుకోండి!");
-        }
+    // 💬 WhatsApp టెక్స్ట్ షేర్ (ఎట్టిపరిస్థితుల్లోనూ ఫెయిల్ అవ్వదు)
+    function shareWhatsAppText() {
+        const fName = document.getElementById("farmerName").value || "రైతు";
+        const crop = document.getElementById("crop").value || "-";
+        const acres = document.getElementById("acres").value || "0";
+        
+        const seed = Number(document.getElementById("seed").value) || 0;
+        const fert = Number(document.getElementById("fert").value) || 0;
+        const labour = Number(document.getElementById("labour").value) || 0;
+        const pesticide = Number(document.getElementById("pesticide").value) || 0;
+        const irrigation = Number(document.getElementById("irrigation").value) || 0;
+        const tractor = Number(document.getElementById("tractor").value) || 0;
+        const diesel = Number(document.getElementById("diesel").value) || 0;
+        const other = Number(document.getElementById("other").value) || 0;
+        
+        const totalExpense = seed + fert + labour + pesticide + irrigation + tractor + diesel + other;
+        const totalIncome = (Number(document.getElementById("yield").value) || 0) * (Number(document.getElementById("price").value) || 0);
+        const profitLoss = totalIncome - totalExpense;
+
+        let text = `🌾 *రైతు ఖర్చుల రిపోర్ట్* 🌾\n\n`;
+        text += `👨‍🌾 *పేరు:* ${fName}\n`;
+        text += `🌱 *పంట:* ${crop} (${acres} ఎకరాలు)\n`;
+        text += `💰 *మొత్తం ఖర్చు:* ₹${totalExpense.toLocaleString()}\n`;
+        text += `💵 *మొత్తం ఆదాయం:* ₹${totalIncome.toLocaleString()}\n`;
+        text += `📈 *లాభం/నష్టం:* ₹${profitLoss.toLocaleString()}\n\n`;
+        text += `📱 _Smart Farmer App ద్వారా పంపబడింది_`;
+
+        window.location.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
     }
 
-    // రిపోర్ట్ క్లోజ్ చేసి వెనక్కి రావడానికి
+    // వెనక్కి రావడానికి
     function closeReport() {
         document.getElementById("resultScreen").style.display = "none";
         document.getElementById("inputSection").style.display = "block";
