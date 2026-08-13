@@ -172,55 +172,68 @@
             options: { responsive: true, plugins: { legend: { position: "bottom" } } }
         });
 
-        // 3. 📄 అచ్చమైన PDF రిపోర్ట్ డిజైన్ (Hidden Area)
+        // 3. 📄 అచ్చమైన PDF రిపోర్ట్ డిజైన్ (Hidden Area) - ఇక్కడ మార్పు జరిగింది!
         const l = telugu ? dict.te : dict.en;
         const printHTML = `
             <h1 style="text-align:center; color: green; font-size: 24px; margin-bottom: 20px;">${l.title}</h1>
             
-            <h2 style="color: #333; font-size: 20px;">${l.fDetails}</h2>
-            <div style="font-size: 16px; line-height: 1.8; margin-top: 10px; margin-bottom: 20px;">
-                <span style="color: #666;">${l.fName}</span><br><strong>${document.getElementById("farmerName").value || "-"}</strong><br>
-                <span style="color: #666;">${l.vil}</span><br><strong>${document.getElementById("village").value || "-"}</strong><br>
-                <span style="color: #666;">${l.crop}</span><br><strong>${document.getElementById("crop").value || "-"}</strong><br>
-                <span style="color: #666;">${l.acres}</span><br><strong>${acres}</strong><br>
-                <span style="color: #666;">${l.date}</span><br><strong>${document.getElementById("date").value || "-"}</strong>
+            <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.fDetails}</h2>
+            <div style="font-size: 16px; line-height: 1.8; margin-bottom: 20px;">
+                <span style="color: #666;">${l.fName}:</span> <strong>${document.getElementById("farmerName").value || "-"}</strong><br>
+                <span style="color: #666;">${l.vil}:</span> <strong>${document.getElementById("village").value || "-"}</strong><br>
+                <span style="color: #666;">${l.crop}:</span> <strong>${document.getElementById("crop").value || "-"}</strong><br>
+                <span style="color: #666;">${l.acres}:</span> <strong>${acres}</strong><br>
+                <span style="color: #666;">${l.date}:</span> <strong>${document.getElementById("date").value || "-"}</strong>
             </div>
 
-            <div style="font-size: 18px; line-height: 1.8; margin-bottom: 20px;">
-                <strong>${l.exp}</strong><br><span style="font-size: 22px;">₹ ${totalExpense.toLocaleString()}</span><br><br>
-                <strong>${l.inc}</strong><br><span style="font-size: 22px;">₹ ${totalIncome.toLocaleString()}</span><br><br>
-                <strong>${l.prof}</strong><br><span style="font-size: 22px; color: ${color};">₹ ${profitLoss.toLocaleString()}</span><br><br>
-                <strong>${l.cpa}</strong><br><span style="font-size: 22px;">₹ ${perAcre.toFixed(2)}</span>
+            <!-- 🟩 ఇక్కడ మీ PDF లోకి కూడా అందమైన ఆకుపచ్చ కార్డ్స్ జత చేశాను -->
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
+                    <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.exp}</h3>
+                    <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalExpense.toLocaleString()}</h2>
+                </div>
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
+                    <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.inc}</h3>
+                    <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalIncome.toLocaleString()}</h2>
+                </div>
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
+                    <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.prof}</h3>
+                    <h2 style="margin: 0; font-size: 20px; color: ${color};">₹ ${profitLoss.toLocaleString()}</h2>
+                </div>
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
+                    <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.cpa}</h3>
+                    <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${perAcre.toFixed(2)}</h2>
+                </div>
             </div>
 
-            <h2 style="color: #333; font-size: 20px; margin-top: 20px;">${l.eDetails}</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 16px; margin-top: 10px; margin-bottom: 20px;">
-                <div><span style="color: #666;">${l.seed}</span><br><strong>${seed}</strong></div>
-                <div><span style="color: #666;">${l.fert}</span><br><strong>${fert}</strong></div>
-                <div><span style="color: #666;">${l.lab}</span><br><strong>${labour}</strong></div>
-                <div><span style="color: #666;">${l.pest}</span><br><strong>${pesticide}</strong></div>
-                <div><span style="color: #666;">${l.irr}</span><br><strong>${irrigation}</strong></div>
-                <div><span style="color: #666;">${l.trac}</span><br><strong>${tractor}</strong></div>
-                <div><span style="color: #666;">${l.dies}</span><br><strong>${diesel}</strong></div>
-                <div><span style="color: #666;">${l.oth}</span><br><strong>${other}</strong></div>
+            <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.eDetails}</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 16px; margin-bottom: 20px;">
+                <div><span style="color: #666;">${l.seed}:</span><br><strong>${seed}</strong></div>
+                <div><span style="color: #666;">${l.fert}:</span><br><strong>${fert}</strong></div>
+                <div><span style="color: #666;">${l.lab}:</span><br><strong>${labour}</strong></div>
+                <div><span style="color: #666;">${l.pest}:</span><br><strong>${pesticide}</strong></div>
+                <div><span style="color: #666;">${l.irr}:</span><br><strong>${irrigation}</strong></div>
+                <div><span style="color: #666;">${l.trac}:</span><br><strong>${tractor}</strong></div>
+                <div><span style="color: #666;">${l.dies}:</span><br><strong>${diesel}</strong></div>
+                <div><span style="color: #666;">${l.oth}:</span><br><strong>${other}</strong></div>
             </div>
 
-            <h2 style="color: #333; font-size: 20px;">${l.iDetails}</h2>
-            <div style="font-size: 16px; line-height: 1.8; margin-top: 10px;">
-                <span style="color: #666;">${l.yld}</span><br><strong>${yieldQty}</strong><br>
-                <span style="color: #666;">${l.prc}</span><br><strong>${price}</strong>
+            <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">${l.iDetails}</h2>
+            <div style="font-size: 16px; line-height: 1.8;">
+                <span style="color: #666;">${l.yld}:</span><br><strong>${yieldQty}</strong><br>
+                <span style="color: #666;">${l.prc}:</span><br><strong>${price}</strong>
             </div>
 
-            <!-- చార్ట్ మరియు సమ్మరీ సెకండ్ పేజీలో వచ్చేలా -->
+            <!-- చార్ట్ సెకండ్ పేజీలో వచ్చేలా -->
             <div class="html2pdf__page-break"></div>
             
-            <h2 style="color: #333; font-size: 20px; text-align: center; margin-top: 20px;">${l.chrt}</h2>
+            <h2 style="color: #333; font-size: 20px; text-align: center; margin-top: 20px; margin-bottom: 10px;">${l.chrt}</h2>
             <div style="text-align: center; margin-bottom: 30px;">
                 <canvas id="printExpenseChart" style="max-width: 400px; margin: auto;"></canvas>
             </div>
 
-            <h2 style="color: green; font-size: 22px; text-align: center;">${l.rep}</h2>
-            <div style="font-size: 18px; line-height: 1.8; text-align: center; margin-top: 10px;">
+            <h2 style="color: green; font-size: 22px; text-align: center; margin-bottom: 15px;">${l.rep}</h2>
+            <div style="font-size: 18px; line-height: 1.8; text-align: center;">
                 ${l.tExp} : ₹ ${totalExpense.toLocaleString()}<br>
                 ${l.cpa} : ₹ ${perAcre.toFixed(2)}<br>
                 ${l.tInc} : ₹ ${totalIncome.toLocaleString()}<br>
