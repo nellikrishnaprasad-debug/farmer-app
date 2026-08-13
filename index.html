@@ -42,7 +42,7 @@
             #langBtn { float: none; width: 100%; margin-bottom: 15px; }
         }
 
-        /* ⏳ కొత్త లోడింగ్ ఓవర్‌లే డిజైన్ */
+        /* ⏳ లోడింగ్ ఓవర్‌లే డిజైన్ */
         #loadingOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); color: white;
@@ -67,7 +67,7 @@
 
 <div class="container" id="mainContainer">
 
-    <!-- 📱 ఇన్పుట్ స్క్రీన్ (యాప్ లో కనిపించేది) -->
+    <!-- 📱 ఇన్పుట్ స్క్రీన్ -->
     <div id="inputSection">
         <button id="langBtn" onclick="changeLanguage()">🌐 తెలుగు</button>
         <h1 id="title">🌾 Smart Farmer Expense Manager</h1>
@@ -189,7 +189,6 @@
         saveData();
     }
 
-    // 📥 పర్ఫెక్ట్ గా డౌన్లోడ్ అయ్యే కొత్త ఫంక్షన్
     function downloadPDF() {
         calculateExpense(); 
         
@@ -197,11 +196,9 @@
         const inputArea = document.getElementById("inputSection");
         const printArea = document.getElementById("printReportSection");
 
-        // 1. వెంటనే లోడింగ్ స్క్రీన్ ఆన్ చేయడం
         overlay.style.display = "flex";
 
         setTimeout(() => {
-            // 2. చార్ట్ మరియు డేటాను సేకరించడం
             const seed = Number(document.getElementById("seed").value) || 0;
             const fert = Number(document.getElementById("fert").value) || 0;
             const labour = Number(document.getElementById("labour").value) || 0;
@@ -223,7 +220,6 @@
             const l = telugu ? dict.te : dict.en;
             const chartImg = document.getElementById("expenseChart").toDataURL("image/png");
 
-            // 3. రిపోర్ట్ HTML నింపడం
             printArea.innerHTML = `
                 <h1 style="text-align:center; color: green; font-size: 24px; margin-bottom: 20px;">${l.title}</h1>
                 
@@ -254,7 +250,8 @@
                     <span style="color: #666;">${l.prc}:</span><br><strong>${price}</strong>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                <!-- 🛑 ఇక్కడే మార్పు చేశాను: page-break-inside: avoid; అనే కోడ్ ద్వారా ఈ 4 బాక్సులు ఎట్టిపరిస్థితుల్లోనూ కట్ అవ్వవు -->
+                <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; page-break-inside: avoid;">
                     <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #c8e6c9;">
                         <h3 style="color: #2e7d32; font-size: 16px; margin: 0 0 5px 0;">${l.exp}</h3>
                         <h2 style="margin: 0; font-size: 20px; color: #000;">₹ ${totalExpense.toLocaleString()}</h2>
@@ -273,6 +270,7 @@
                     </div>
                 </div>
 
+                <!-- చార్ట్ సెకండ్ పేజీలో వస్తుంది -->
                 <div class="html2pdf__page-break"></div>
                 
                 <h2 style="color: #333; font-size: 20px; text-align: center; margin-top: 20px; margin-bottom: 10px;">${l.chrt}</h2>
@@ -289,11 +287,9 @@
                 </div>
             `;
 
-            // 4. ఇక్కడ రిపోర్ట్ ని చూపిస్తాం (కానీ లోడింగ్ స్క్రీన్ వెనుక ఉంటుంది కాబట్టి కంటికి కనిపించదు)
             inputArea.style.display = "none";
             printArea.style.display = "block";
 
-            // 5. PDF జనరేట్ చేసి, వెంటనే మళ్లీ పాత స్క్రీన్ కి మార్చేస్తాం
             setTimeout(() => {
                 const opt = {
                     margin: 15, filename: 'Farmer_Expense_Report.pdf',
@@ -306,9 +302,9 @@
                     printArea.style.display = "none";
                     overlay.style.display = "none"; // లోడింగ్ స్క్రీన్ ఆఫ్
                 });
-            }, 500); // ఫోటోలు కరెక్ట్ గా రావడానికి కొద్దిగా సమయం
+            }, 500); 
 
-        }, 500); // చార్ట్ రెండర్ అవ్వడానికి కొద్దిగా సమయం
+        }, 500); 
     }
 
     function saveData(){
@@ -364,7 +360,6 @@
         }
     }
 
-    // 🛑 బ్యాక్ బటన్ నొక్కినప్పుడు యాప్ వెంటనే క్లోజ్ అవ్వకుండా సెక్యూరిటీ
     window.onload = function(){ 
         loadData(); 
         window.history.pushState({ page: 1 }, "", "");
