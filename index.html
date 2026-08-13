@@ -12,7 +12,7 @@
     <style>
         /* CSS (యాప్ డిజైన్) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #f2f8f2; padding: 15px; }
+        body { background: #f2f8f2; padding: 15px; overflow-x: hidden; } /* స్క్రీన్ పక్కకు జరగకుండా */
         
         .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,.1); }
         h1 { text-align: center; color: green; margin-bottom: 20px; font-size: 22px; }
@@ -82,7 +82,7 @@
             <label>Price Per Quintal (₹)</label> <input type="number" id="price">
         </div>
 
-        <!-- యాక్షన్ బటన్స్ -->
+        <!-- యాక్షన్ బటన్స్ (Calculate, PDF, Reset) -->
         <div id="actionButtons" class="buttons-row">
             <button onclick="calculateExpense()">💰 Calculate</button>
             <button class="btn-pdf" onclick="downloadPDF()">📥 Download PDF</button>
@@ -103,9 +103,9 @@
         </div>
     </div>
 
-    <!-- 📄 ప్రింట్ / PDF స్క్రీన్ -->
-    <div id="printReportSection" style="display: none; background: #fff; padding: 20px; font-family: Arial, sans-serif; color: #333;">
-        <!-- ఈ భాగం జావాస్క్రిప్ట్ ద్వారా ఆటోమేటిక్ గా తయారవుతుంది -->
+    <!-- 📄 ప్రింట్ / PDF స్క్రీన్ (ఇది మీకు స్క్రీన్ మీద కనిపించదు, బ్యాక్ గ్రౌండ్ లోనే ఉండిపోతుంది) -->
+    <div id="printReportSection" style="position: absolute; top: 0; left: 0; z-index: -1000; opacity: 0; pointer-events: none; background: #fff; padding: 20px; font-family: Arial, sans-serif; color: #333; width: 800px;">
+        <!-- ఈ భాగం జావాస్క్రిప్ట్ ద్వారా ఆటోమేటిక్ గా మీ PDF లాగా తయారవుతుంది -->
     </div>
 
 </div>
@@ -169,7 +169,6 @@
             options: { responsive: true, plugins: { legend: { position: "bottom" } } }
         });
 
-        // 3. 📄 అచ్చమైన PDF రిపోర్ట్ డిజైన్
         const l = telugu ? dict.te : dict.en;
         const printHTML = `
             <h1 style="text-align:center; color: green; font-size: 24px; margin-bottom: 20px;">${l.title}</h1>
@@ -254,13 +253,14 @@
 
     function downloadPDF() {
         calculateExpense(); 
-        const inputArea = document.getElementById("inputSection");
-        const printArea = document.getElementById("printReportSection");
+        const pdfBtn = document.querySelector(".btn-pdf");
         
-        inputArea.style.display = "none";
-        printArea.style.display = "block";
-        
+        // బటన్ టెక్స్ట్ మార్చడం
+        pdfBtn.textContent = "⏳ Please Wait...";
+        pdfBtn.disabled = true;
+
         setTimeout(() => {
+            const printArea = document.getElementById("printReportSection");
             const opt = {
                 margin: 15, 
                 filename: 'Farmer_Expense_Report.pdf',
@@ -270,10 +270,15 @@
                 pagebreak: { mode: ['css', 'legacy'] }
             };
 
-            html2pdf().set(opt).from(printArea).save().then(() => {
-                inputArea.style.display = "block";
-                printArea.style.display = "none";
-            });
+            // PDF సేవ్ అవ్వడం
+            html2pdf().set(opt).from(printArea).save();
+            
+            // ఆండ్రాయిడ్ యాప్స్ కోసం సైలెంట్ గా బటన్ నార్మల్ అవ్వడానికి టైమర్ (స్క్రీన్ అస్సలు కదలదు)
+            setTimeout(() => {
+                pdfBtn.textContent = "📥 Download PDF";
+                pdfBtn.disabled = false;
+            }, 3000);
+
         }, 500);
     }
 
@@ -333,17 +338,13 @@
     // 🛑 బ్యాక్ బటన్ నొక్కినప్పుడు యాప్ క్లోజ్ అవ్వకుండా అలర్ట్ ఇవ్వడానికి లాజిక్
     window.onload = function(){ 
         loadData(); 
-        
-        // హిస్టరీలోకి ఒక స్టేట్ ని పంపడం
         window.history.pushState({ page: 1 }, "", "");
     };
 
-    // యూజర్ బ్యాక్ బటన్ నొక్కినప్పుడు ఈ ఈవెంట్ రన్ అవుతుంది
     window.onpopstate = function(event) {
         if(confirm("Are you sure you want to exit the app? / మీరు యాప్ నుండి బయటకు వెళ్లాలనుకుంటున్నారా?")) {
-            window.history.back(); // OK నొక్కితే యాప్ క్లోజ్ అవుతుంది
+            window.history.back(); 
         } else {
-            // Cancel నొక్కితే మళ్లీ స్టేట్ ని యాడ్ చేసి యాప్ లోనే ఉంచుతుంది
             window.history.pushState({ page: 1 }, "", "");
         }
     };
