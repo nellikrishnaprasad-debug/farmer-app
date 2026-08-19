@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -20,7 +20,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
+
+      - name: Create web directory
+        run: |
+          mkdir -p www
+          cp index.html www/
 
       - name: Install Capacitor
         run: |
@@ -33,14 +38,14 @@ jobs:
           {
             "appId": "com.nellikrishnaprasad.farmerapp",
             "appName": "Smart Farmer Expense Manager",
-            "webDir": "."
+            "webDir": "www"
           }
           EOF
 
       - name: Add Android platform
         run: npx cap add android
 
-      - name: Sync web app
+      - name: Sync Android project
         run: npx cap sync android
 
       - name: Build Android App Bundle
