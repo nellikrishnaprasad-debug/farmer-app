@@ -46,39 +46,38 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
-      - name: Sync Android project
+      - name: Sync Android
         run: npx cap sync android
 
-      - name: Build Android AAB
+      - name: Make Gradle executable
+        run: chmod +x android/gradlew
+
+      - name: Build Debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug
+
+      - name: Build Release AAB
         working-directory: android
         run: ./gradlew bundleRelease
 
-      - name: Build Android APK
-        working-directory: android
-        run: ./gradlew assembleRelease
-
-      - name: Show build files
+      - name: Show APK and AAB
         run: |
-          echo "=============================="
-          echo "AAB FILES"
-          echo "=============================="
-          find android/app/build/outputs -type f -name "*.aab" -print || true
+          echo "APK:"
+          find android/app/build/outputs -type f -name "*.apk" -print
 
-          echo "=============================="
-          echo "APK FILES"
-          echo "=============================="
-          find android/app/build/outputs -type f -name "*.apk" -print || true
+          echo "AAB:"
+          find android/app/build/outputs -type f -name "*.aab" -print
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: smart-farmer-expense-manager-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
 
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
           name: smart-farmer-expense-manager-aab
-          path: android/app/build/outputs/**/*.aab
-          if-no-files-found: error
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: smart-farmer-expense-manager-apk
-          path: android/app/build/outputs/**/*.apk
+          path: android/app/build/outputs/bundle/release/app-release.aab
           if-no-files-found: error
