@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -56,14 +57,28 @@ jobs:
         working-directory: android
         run: ./gradlew assembleRelease
 
+      - name: Show build files
+        run: |
+          echo "=============================="
+          echo "AAB FILES"
+          echo "=============================="
+          find android/app/build/outputs -type f -name "*.aab" -print || true
+
+          echo "=============================="
+          echo "APK FILES"
+          echo "=============================="
+          find android/app/build/outputs -type f -name "*.apk" -print || true
+
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
           name: smart-farmer-expense-manager-aab
-          path: android/app/build/outputs/bundle/release/app-release.aab
+          path: android/app/build/outputs/**/*.aab
+          if-no-files-found: error
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: smart-farmer-expense-manager-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: android/app/build/outputs/**/*.apk
+          if-no-files-found: error
