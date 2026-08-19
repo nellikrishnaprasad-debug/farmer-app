@@ -48,12 +48,22 @@ jobs:
       - name: Sync Android project
         run: npx cap sync android
 
-      - name: Build Android App Bundle
+      - name: Build Android AAB
         working-directory: android
         run: ./gradlew bundleRelease
+
+      - name: Build Android APK
+        working-directory: android
+        run: ./gradlew assembleRelease
 
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          name: smart-farmer-expense-manager
+          name: smart-farmer-expense-manager-aab
           path: android/app/build/outputs/bundle/release/app-release.aab
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: smart-farmer-expense-manager-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
