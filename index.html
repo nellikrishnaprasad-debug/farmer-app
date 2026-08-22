@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Smart Farmer Expense Manager</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     margin: 0;
     padding: 0;
 }
@@ -92,8 +89,7 @@ input::placeholder {
     color: #999;
 }
 
-
-/* VOICE INPUT */
+/* Voice input */
 
 .voice-input-row {
     display: flex;
@@ -115,8 +111,7 @@ input::placeholder {
     cursor: pointer;
 }
 
-
-/* BUTTONS */
+/* Buttons */
 
 .button-area {
     display: flex;
@@ -149,8 +144,7 @@ button:active {
     color: white;
 }
 
-
-/* EXPENSE ACTIONS */
+/* Expense buttons */
 
 .expense-actions {
     display: flex;
@@ -184,8 +178,7 @@ button:active {
     display: none;
 }
 
-
-/* VOICE STATUS */
+/* Voice status */
 
 #voiceStatus {
     display: none;
@@ -199,8 +192,7 @@ button:active {
     font-weight: bold;
 }
 
-
-/* CUSTOM EXPENSE */
+/* Custom expense */
 
 .custom-expense-list {
     margin-top: 12px;
@@ -234,11 +226,9 @@ button:active {
     color: white;
     padding: 6px 9px;
     font-size: 12px;
-    border-radius: 6px;
 }
 
-
-/* REPORT */
+/* Report */
 
 #report {
     display: none;
@@ -275,10 +265,9 @@ button:active {
     margin-bottom: 6px;
 }
 
-
-/* FARMER DETAILS */
-
-.farmer-grid {
+.farmer-grid,
+.expense-grid,
+.income-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 5px 25px;
@@ -293,15 +282,6 @@ button:active {
     font-size: 13px;
 }
 
-
-/* EXPENSE REPORT */
-
-.expense-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px 30px;
-}
-
 .expense-item {
     font-size: 11px;
     line-height: 1.2;
@@ -311,15 +291,6 @@ button:active {
     display: block;
     font-size: 13px;
     margin-top: 1px;
-}
-
-
-/* INCOME */
-
-.income-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px 30px;
 }
 
 .income-item {
@@ -333,8 +304,7 @@ button:active {
     margin-top: 2px;
 }
 
-
-/* SUMMARY */
+/* Summary */
 
 .summary-grid {
     display: grid;
@@ -342,7 +312,6 @@ button:active {
     gap: 7px;
     margin-top: 8px;
     margin-bottom: 8px;
-    page-break-inside: avoid;
 }
 
 .summary-card {
@@ -366,8 +335,7 @@ button:active {
     margin-top: 2px;
 }
 
-
-/* FINAL RESULT */
+/* Final */
 
 .final-result {
     background: #fbfffb;
@@ -376,7 +344,6 @@ button:active {
     padding: 8px;
     text-align: center;
     margin-top: 8px;
-    page-break-inside: avoid;
 }
 
 .final-result div {
@@ -397,11 +364,10 @@ button:active {
     font-weight: bold;
 }
 
-
-/* REPORT BUTTONS */
+/* Report buttons */
 
 .report-buttons {
-    display: none;
+    display: flex;
     gap: 10px;
     width: 100%;
     max-width: 794px;
@@ -417,8 +383,7 @@ button:active {
     color: white;
 }
 
-
-/* MOBILE */
+/* Mobile */
 
 @media screen and (max-width: 600px) {
 
@@ -449,7 +414,6 @@ button:active {
     }
 }
 
-
 /* A4 PRINT */
 
 @page {
@@ -461,15 +425,18 @@ button:active {
 
     html {
         width: 210mm !important;
+        height: 297mm !important;
         margin: 0 !important;
         padding: 0 !important;
     }
 
     body {
         width: 210mm !important;
+        height: 297mm !important;
         margin: 0 !important;
         padding: 0 !important;
         background: white !important;
+        overflow: hidden !important;
     }
 
     .app,
@@ -481,10 +448,12 @@ button:active {
         display: block !important;
         width: 200mm !important;
         max-width: 200mm !important;
+        height: 287mm !important;
+        max-height: 287mm !important;
         margin: 0 auto !important;
         padding: 1mm !important;
         background: white !important;
-        overflow: visible !important;
+        overflow: hidden !important;
     }
 
     .report-header {
@@ -498,7 +467,6 @@ button:active {
 
     .section {
         margin: 0 0 2.5mm 0 !important;
-        page-break-inside: avoid !important;
     }
 
     .section-title {
@@ -552,8 +520,6 @@ button:active {
     }
 
     .summary-grid {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
         gap: 2mm !important;
         margin-top: 2mm !important;
         margin-bottom: 2mm !important;
@@ -589,26 +555,18 @@ button:active {
         font-size: 13px !important;
     }
 }
-
 </style>
-
 </head>
 
 <body>
 
-
-<!-- =========================
-     INPUT APP
-========================= -->
-
-<div class="app" id="app">
+<div class="app">
 
     <div class="app-title">
         🌾 Smart Farmer Expense Manager
     </div>
 
     <div class="form-box">
-
 
         <!-- FARMER DETAILS -->
 
@@ -617,7 +575,6 @@ button:active {
         <div class="grid">
 
             <div class="field">
-
                 <label>Farmer Name</label>
 
                 <div class="voice-input-row">
@@ -625,7 +582,7 @@ button:active {
                     <input
                         type="text"
                         id="farmerName"
-                        placeholder="Ex: Nelli Prasad">
+                        placeholder="Example: Nelli Prasad">
 
                     <button
                         type="button"
@@ -635,24 +592,18 @@ button:active {
                     </button>
 
                 </div>
-
             </div>
 
-
             <div class="field">
-
                 <label>Village Name</label>
 
                 <input
                     type="text"
                     id="village"
-                    placeholder="Ex: Nagunur">
-
+                    placeholder="Example: Nagunur">
             </div>
 
-
             <div class="field">
-
                 <label>Crop Name</label>
 
                 <div class="voice-input-row">
@@ -660,7 +611,7 @@ button:active {
                     <input
                         type="text"
                         id="cropName"
-                        placeholder="Ex: వరి">
+                        placeholder="Example: వరి">
 
                     <button
                         type="button"
@@ -670,35 +621,27 @@ button:active {
                     </button>
 
                 </div>
-
             </div>
 
-
             <div class="field">
-
                 <label>Total Acres</label>
 
                 <input
                     type="number"
                     id="acres"
-                    placeholder="Ex: 2.5"
+                    placeholder="Example: 2.5"
                     step="0.01">
-
             </div>
 
-
             <div class="field">
-
                 <label>Date</label>
 
                 <input
                     type="date"
                     id="date">
-
             </div>
 
         </div>
-
 
         <!-- EXPENSE DETAILS -->
 
@@ -707,127 +650,87 @@ button:active {
         <div class="grid">
 
             <div class="field">
-
                 <label>Seed Cost</label>
-
                 <input
                     type="number"
                     id="seed"
-                    placeholder="Ex: 5000"
-                    min="0">
-
+                    placeholder="Example: 5000">
             </div>
 
-
             <div class="field">
-
                 <label>Fertilizer Cost</label>
-
                 <input
                     type="number"
                     id="fertilizer"
-                    placeholder="Ex: 10000"
-                    min="0">
-
+                    placeholder="Example: 10000">
             </div>
 
-
             <div class="field">
-
                 <label>Labour Cost</label>
-
                 <input
                     type="number"
                     id="labour"
-                    placeholder="Ex: 12000"
-                    min="0">
-
+                    placeholder="Example: 12000">
             </div>
 
-
             <div class="field">
-
                 <label>Pesticide Cost</label>
-
                 <input
                     type="number"
                     id="pesticide"
-                    placeholder="Ex: 4000"
-                    min="0">
-
+                    placeholder="Example: 4000">
             </div>
 
-
             <div class="field">
-
                 <label>Irrigation Cost</label>
-
                 <input
                     type="number"
                     id="irrigation"
-                    placeholder="Ex: 3000"
-                    min="0">
-
+                    placeholder="Example: 3000">
             </div>
 
-
             <div class="field">
-
                 <label>Tractor Cost</label>
-
                 <input
                     type="number"
                     id="tractor"
-                    placeholder="Ex: 8000"
-                    min="0">
-
+                    placeholder="Example: 8000">
             </div>
 
-
             <div class="field">
-
                 <label>Diesel Cost</label>
-
                 <input
                     type="number"
                     id="diesel"
-                    placeholder="Ex: 5000"
-                    min="0">
-
+                    placeholder="Example: 5000">
             </div>
 
-
             <div class="field">
-
                 <label>Other Expenses</label>
-
                 <input
                     type="number"
                     id="other"
-                    placeholder="Ex: 3000"
-                    min="0">
-
+                    placeholder="Example: 3000">
             </div>
 
         </div>
 
-
-        <!-- CUSTOM EXPENSE LIST -->
+        <!-- CUSTOM EXPENSE -->
 
         <div
             id="customExpenseList"
             class="custom-expense-list">
         </div>
 
-
         <!-- VOICE STATUS -->
 
         <div id="voiceStatus"></div>
 
-
-        <!-- EXPENSE BUTTONS -->
+        <!-- EXPENSE ACTIONS -->
 
         <div class="expense-actions">
+
+            <!-- RESET ABOVE ADD EXPENSE -->
 
             <button
                 type="button"
@@ -836,14 +739,12 @@ button:active {
                 ♻️ Reset
             </button>
 
-
             <button
                 type="button"
                 class="add-expense-btn"
                 onclick="addExpense()">
                 ➕ Add Expense
             </button>
-
 
             <button
                 type="button"
@@ -852,7 +753,6 @@ button:active {
                 onclick="startVoiceExpense()">
                 🎤 Voice Expense
             </button>
-
 
             <button
                 type="button"
@@ -863,7 +763,6 @@ button:active {
             </button>
 
         </div>
-
 
         <!-- INCOME -->
 
@@ -878,12 +777,10 @@ button:active {
                 <input
                     type="number"
                     id="yield"
-                    placeholder="Ex: 30"
-                    step="0.01"
-                    min="0">
+                    placeholder="Example: 30"
+                    step="0.01">
 
             </div>
-
 
             <div class="field">
 
@@ -892,13 +789,11 @@ button:active {
                 <input
                     type="number"
                     id="price"
-                    placeholder="Ex: 2500"
-                    min="0">
+                    placeholder="Example: 2500">
 
             </div>
 
         </div>
-
 
         <!-- MAIN BUTTONS -->
 
@@ -911,7 +806,6 @@ button:active {
                 📊 Generate Report
             </button>
 
-
             <button
                 class="print"
                 type="button"
@@ -922,26 +816,15 @@ button:active {
         </div>
 
     </div>
-
 </div>
 
-
-<!-- =========================
-     REPORT
-========================= -->
+<!-- REPORT -->
 
 <div id="report">
 
     <div class="report-header">
-
-        <h1>
-            🌾 Smart Farmer Expense Report
-        </h1>
-
+        <h1>🌾 Smart Farmer Expense Report</h1>
     </div>
-
-
-    <!-- FARMER DETAILS -->
 
     <div class="section">
 
@@ -977,11 +860,7 @@ button:active {
             </div>
 
         </div>
-
     </div>
-
-
-    <!-- EXPENSE DETAILS -->
 
     <div class="section">
 
@@ -995,9 +874,6 @@ button:active {
         </div>
 
     </div>
-
-
-    <!-- INCOME DETAILS -->
 
     <div class="section">
 
@@ -1021,9 +897,6 @@ button:active {
 
     </div>
 
-
-    <!-- SUMMARY -->
-
     <div class="summary-grid">
 
         <div class="summary-card">
@@ -1039,7 +912,6 @@ button:active {
 
         </div>
 
-
         <div class="summary-card">
 
             <div class="summary-label">
@@ -1053,7 +925,6 @@ button:active {
 
         </div>
 
-
         <div class="summary-card">
 
             <div class="summary-label">
@@ -1066,7 +937,6 @@ button:active {
             </div>
 
         </div>
-
 
         <div class="summary-card">
 
@@ -1082,9 +952,6 @@ button:active {
         </div>
 
     </div>
-
-
-    <!-- FINAL RESULT -->
 
     <div class="final-result">
 
@@ -1102,19 +969,15 @@ button:active {
             Profit / Loss:
         </div>
 
-        <div
-            id="rProfit"
-            class="profit">
-        </div>
+        <div id="rProfit" class="profit"></div>
 
     </div>
 
 </div>
 
-
 <!-- REPORT BUTTONS -->
 
-<div class="report-buttons" id="reportButtons">
+<div class="report-buttons">
 
     <button
         class="back-btn"
@@ -1130,20 +993,18 @@ button:active {
 
 </div>
 
-
 <script>
 
 /* =========================
-   VARIABLES
+   CUSTOM EXPENSES
 ========================= */
 
 let customExpenses = [];
-
 let recognition = null;
 
 
 /* =========================
-   DATE
+   TODAY DATE
 ========================= */
 
 function setTodayDate() {
@@ -1190,43 +1051,32 @@ function addExpense() {
         return;
     }
 
-
     const amount =
         prompt("Enter expense amount:");
-
 
     if (
         amount === null ||
         amount.trim() === "" ||
-        isNaN(Number(amount)) ||
-        Number(amount) < 0
+        isNaN(Number(amount))
     ) {
 
         alert("Please enter a valid amount.");
-
         return;
     }
 
-
     customExpenses.push({
-
         id: Date.now(),
-
         name: name.trim(),
-
         amount: Number(amount)
-
     });
 
-
     renderCustomExpenses();
-
     generateReport();
 }
 
 
 /* =========================
-   CUSTOM EXPENSE LIST
+   RENDER CUSTOM EXPENSES
 ========================= */
 
 function renderCustomExpenses() {
@@ -1236,9 +1086,7 @@ function renderCustomExpenses() {
             "customExpenseList"
         );
 
-
     container.innerHTML = "";
-
 
     customExpenses.forEach(
         function(expense) {
@@ -1249,7 +1097,6 @@ function renderCustomExpenses() {
             item.className =
                 "custom-expense-item";
 
-
             const name =
                 document.createElement("div");
 
@@ -1259,7 +1106,6 @@ function renderCustomExpenses() {
             name.textContent =
                 "➕ " + expense.name;
 
-
             const amount =
                 document.createElement("div");
 
@@ -1268,7 +1114,6 @@ function renderCustomExpenses() {
 
             amount.textContent =
                 money(expense.amount);
-
 
             const deleteButton =
                 document.createElement("button");
@@ -1282,34 +1127,25 @@ function renderCustomExpenses() {
             deleteButton.textContent =
                 "✕";
 
-
             deleteButton.onclick =
                 function() {
 
                     customExpenses =
                         customExpenses.filter(
                             function(item) {
-
-                                return item.id !==
-                                    expense.id;
+                                return item.id !== expense.id;
                             }
                         );
 
-
                     renderCustomExpenses();
-
                     generateReport();
                 };
 
-
             item.appendChild(name);
-
             item.appendChild(amount);
-
             item.appendChild(deleteButton);
 
             container.appendChild(item);
-
         }
     );
 }
@@ -1325,39 +1161,41 @@ function voiceToInput(inputId) {
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
-
     if (!SpeechRecognition) {
 
         alert(
-            "Voice input is not supported. Please use Google Chrome."
+            "Voice input is not supported in this browser. Please open the app in Google Chrome."
         );
 
         return;
     }
 
-
     const input =
         document.getElementById(inputId);
-
 
     const voice =
         new SpeechRecognition();
 
+    /*
+       Telugu + English
+       If Telugu speech is required,
+       Chrome may automatically handle
+       the selected language better.
+    */
 
-    voice.lang = "en-IN";
+    voice.lang = "te-IN";
 
     voice.continuous = false;
-
     voice.interimResults = false;
-
+    voice.maxAlternatives = 1;
 
     voice.onstart =
         function() {
 
             input.placeholder =
                 "🎤 Listening...";
-        };
 
+        };
 
     voice.onresult =
         function(event) {
@@ -1367,33 +1205,71 @@ function voiceToInput(inputId) {
                 .transcript
                 .trim();
 
-
             input.value = text;
 
-            input.placeholder = "";
+            input.placeholder =
+                inputId === "farmerName"
+                ? "Example: Nelli Prasad"
+                : inputId === "cropName"
+                ? "Example: వరి"
+                : "";
 
         };
-
 
     voice.onerror =
-        function() {
+        function(event) {
 
-            input.placeholder = "";
+            input.placeholder =
+                inputId === "farmerName"
+                ? "Example: Nelli Prasad"
+                : inputId === "cropName"
+                ? "Example: వరి"
+                : "";
 
-            alert(
-                "Voice input failed. Please try again."
-            );
+            let message =
+                "Voice input failed. Please try again.";
+
+            if (event.error === "not-allowed") {
+
+                message =
+                    "Microphone permission denied. Please allow microphone permission for Chrome.";
+
+            } else if (event.error === "no-speech") {
+
+                message =
+                    "No speech detected. Please speak clearly and try again.";
+
+            } else if (event.error === "network") {
+
+                message =
+                    "Voice service needs an internet connection. Please check your internet and try again.";
+            }
+
+            alert(message);
         };
-
 
     voice.onend =
         function() {
 
-            input.placeholder = "";
+            input.placeholder =
+                inputId === "farmerName"
+                ? "Example: Nelli Prasad"
+                : inputId === "cropName"
+                ? "Example: వరి"
+                : "";
+
         };
 
+    try {
 
-    voice.start();
+        voice.start();
+
+    } catch (error) {
+
+        alert(
+            "Voice input could not start. Please try again."
+        );
+    }
 }
 
 
@@ -1407,7 +1283,6 @@ function startVoiceExpense() {
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
-
     if (!SpeechRecognition) {
 
         alert(
@@ -1417,47 +1292,38 @@ function startVoiceExpense() {
         return;
     }
 
-
     if (recognition) {
 
         recognition.stop();
-
         recognition = null;
     }
-
 
     recognition =
         new SpeechRecognition();
 
-
-    recognition.lang = "en-IN";
+    recognition.lang = "te-IN";
 
     recognition.continuous = false;
-
     recognition.interimResults = false;
-
+    recognition.maxAlternatives = 1;
 
     const status =
         document.getElementById(
             "voiceStatus"
         );
 
-
     status.style.display = "block";
 
     status.textContent =
-        "🎤 Listening... Say expense name and amount";
-
+        "🎤 Listening... Expense name and amount చెప్పండి";
 
     document.getElementById(
         "voiceButton"
     ).style.display = "none";
 
-
     document.getElementById(
         "stopVoiceButton"
     ).style.display = "block";
-
 
     recognition.onresult =
         function(event) {
@@ -1467,28 +1333,23 @@ function startVoiceExpense() {
                 .transcript
                 .trim();
 
-
             status.textContent =
                 "Heard: " + text;
-
 
             const numberMatch =
                 text.match(
                     /(\d+(?:\.\d+)?)/g
                 );
 
-
             if (!numberMatch) {
 
                 alert(
-                    "Amount not detected. Example: Harvesting 5000"
+                    "Amount detected కాలేదు. ఉదాహరణ: Harvesting 5000"
                 );
 
                 stopVoiceExpense();
-
                 return;
             }
-
 
             const amount =
                 Number(
@@ -1497,9 +1358,9 @@ function startVoiceExpense() {
                     ]
                 );
 
-
             let expenseName =
-                text.replace(
+                text
+                .replace(
                     numberMatch[
                         numberMatch.length - 1
                     ],
@@ -1507,22 +1368,19 @@ function startVoiceExpense() {
                 )
                 .trim();
 
-
             expenseName =
                 expenseName
                 .replace(
-                    /rupees?|rs\.?|₹/gi,
+                    /rupees?|rs\.?|₹|రూపాయలు|రూపాయలు/gi,
                     ""
                 )
                 .trim();
-
 
             if (!expenseName) {
 
                 expenseName =
                     "Voice Expense";
             }
-
 
             customExpenses.push({
 
@@ -1533,11 +1391,9 @@ function startVoiceExpense() {
                 amount: amount
             });
 
-
             renderCustomExpenses();
 
             generateReport();
-
 
             status.textContent =
                 "✅ Added: " +
@@ -1545,20 +1401,35 @@ function startVoiceExpense() {
                 " - " +
                 money(amount);
 
-
             stopVoiceExpense();
         };
-
 
     recognition.onerror =
-        function() {
+        function(event) {
 
-            status.textContent =
+            let message =
                 "❌ Voice input failed. Please try again.";
+
+            if (event.error === "not-allowed") {
+
+                message =
+                    "❌ Microphone permission denied. Chrome settingsలో Microphone Allow చేయండి.";
+
+            } else if (event.error === "no-speech") {
+
+                message =
+                    "❌ Voice వినిపించలేదు. మళ్లీ ప్రయత్నించండి.";
+
+            } else if (event.error === "network") {
+
+                message =
+                    "❌ Internet connection అవసరం. Internet check చేసి మళ్లీ ప్రయత్నించండి.";
+            }
+
+            status.textContent = message;
 
             stopVoiceExpense();
         };
-
 
     recognition.onend =
         function() {
@@ -1572,8 +1443,17 @@ function startVoiceExpense() {
             ).style.display = "none";
         };
 
+    try {
 
-    recognition.start();
+        recognition.start();
+
+    } catch (error) {
+
+        status.textContent =
+            "❌ Voice could not start. Please try again.";
+
+        stopVoiceExpense();
+    }
 }
 
 
@@ -1585,32 +1465,20 @@ function stopVoiceExpense() {
 
     if (recognition) {
 
-        recognition.stop();
+        try {
+            recognition.stop();
+        } catch (e) {}
 
         recognition = null;
     }
-
 
     document.getElementById(
         "voiceButton"
     ).style.display = "block";
 
-
     document.getElementById(
         "stopVoiceButton"
     ).style.display = "none";
-}
-
-
-/* =========================
-   GET NUMBER
-========================= */
-
-function getNumber(id) {
-
-    return Number(
-        document.getElementById(id).value
-    ) || 0;
 }
 
 
@@ -1622,74 +1490,102 @@ function generateReport() {
 
     setTodayDate();
 
-
     const farmerName =
         document.getElementById(
             "farmerName"
         ).value.trim();
-
 
     const village =
         document.getElementById(
             "village"
         ).value.trim();
 
-
     const crop =
         document.getElementById(
             "cropName"
         ).value.trim();
 
-
     const acres =
-        getNumber("acres");
-
+        Number(
+            document.getElementById(
+                "acres"
+            ).value
+        ) || 0;
 
     const seed =
-        getNumber("seed");
-
+        Number(
+            document.getElementById(
+                "seed"
+            ).value
+        ) || 0;
 
     const fertilizer =
-        getNumber("fertilizer");
-
+        Number(
+            document.getElementById(
+                "fertilizer"
+            ).value
+        ) || 0;
 
     const labour =
-        getNumber("labour");
-
+        Number(
+            document.getElementById(
+                "labour"
+            ).value
+        ) || 0;
 
     const pesticide =
-        getNumber("pesticide");
-
+        Number(
+            document.getElementById(
+                "pesticide"
+            ).value
+        ) || 0;
 
     const irrigation =
-        getNumber("irrigation");
-
+        Number(
+            document.getElementById(
+                "irrigation"
+            ).value
+        ) || 0;
 
     const tractor =
-        getNumber("tractor");
-
+        Number(
+            document.getElementById(
+                "tractor"
+            ).value
+        ) || 0;
 
     const diesel =
-        getNumber("diesel");
-
+        Number(
+            document.getElementById(
+                "diesel"
+            ).value
+        ) || 0;
 
     const other =
-        getNumber("other");
-
+        Number(
+            document.getElementById(
+                "other"
+            ).value
+        ) || 0;
 
     const yieldValue =
-        getNumber("yield");
-
+        Number(
+            document.getElementById(
+                "yield"
+            ).value
+        ) || 0;
 
     const price =
-        getNumber("price");
-
+        Number(
+            document.getElementById(
+                "price"
+            ).value
+        ) || 0;
 
     const date =
         document.getElementById(
             "date"
         ).value;
-
 
     const baseExpense =
         seed +
@@ -1700,7 +1596,6 @@ function generateReport() {
         tractor +
         diesel +
         other;
-
 
     const customTotal =
         customExpenses.reduce(
@@ -1713,27 +1608,20 @@ function generateReport() {
             0
         );
 
-
     const totalExpense =
         baseExpense +
         customTotal;
 
-
     const totalIncome =
-        yieldValue *
-        price;
-
+        yieldValue * price;
 
     const profit =
-        totalIncome -
-        totalExpense;
-
+        totalIncome - totalExpense;
 
     const expensePerAcre =
         acres > 0
         ? totalExpense / acres
         : 0;
-
 
     const incomePerAcre =
         acres > 0
@@ -1748,24 +1636,20 @@ function generateReport() {
     ).textContent =
         farmerName || "-";
 
-
     document.getElementById(
         "rVillage"
     ).textContent =
         village || "-";
-
 
     document.getElementById(
         "rCrop"
     ).textContent =
         crop || "-";
 
-
     document.getElementById(
         "rAcres"
     ).textContent =
         acres || "-";
-
 
     document.getElementById(
         "rDate"
@@ -1780,75 +1664,66 @@ function generateReport() {
             "reportExpenseGrid"
         );
 
-
     reportGrid.innerHTML = "";
 
 
-    addReportExpense(
-        reportGrid,
-        "Seed Cost",
-        seed
-    );
+    const baseExpenses = [
+
+        ["Seed Cost", seed],
+
+        ["Fertilizer Cost", fertilizer],
+
+        ["Labour Cost", labour],
+
+        ["Pesticide Cost", pesticide],
+
+        ["Irrigation Cost", irrigation],
+
+        ["Tractor Cost", tractor],
+
+        ["Diesel Cost", diesel],
+
+        ["Other Expenses", other]
+
+    ];
 
 
-    addReportExpense(
-        reportGrid,
-        "Fertilizer Cost",
-        fertilizer
-    );
+    baseExpenses.forEach(
+        function(item) {
 
+            reportGrid.innerHTML += `
 
-    addReportExpense(
-        reportGrid,
-        "Labour Cost",
-        labour
-    );
+                <div class="expense-item">
 
+                    ${item[0]}:
 
-    addReportExpense(
-        reportGrid,
-        "Pesticide Cost",
-        pesticide
-    );
+                    <strong>
+                        ${money(item[1])}
+                    </strong>
 
+                </div>
 
-    addReportExpense(
-        reportGrid,
-        "Irrigation Cost",
-        irrigation
-    );
-
-
-    addReportExpense(
-        reportGrid,
-        "Tractor Cost",
-        tractor
-    );
-
-
-    addReportExpense(
-        reportGrid,
-        "Diesel Cost",
-        diesel
-    );
-
-
-    addReportExpense(
-        reportGrid,
-        "Other Expenses",
-        other
+            `;
+        }
     );
 
 
     customExpenses.forEach(
         function(expense) {
 
-            addReportExpense(
-                reportGrid,
-                expense.name,
-                expense.amount
-            );
+            reportGrid.innerHTML += `
 
+                <div class="expense-item">
+
+                    ${escapeHtml(expense.name)}:
+
+                    <strong>
+                        ${money(expense.amount)}
+                    </strong>
+
+                </div>
+
+            `;
         }
     );
 
@@ -1859,7 +1734,6 @@ function generateReport() {
         "rYield"
     ).textContent =
         yieldValue || "-";
-
 
     document.getElementById(
         "rPrice"
@@ -1874,30 +1748,25 @@ function generateReport() {
     ).textContent =
         money(totalExpense);
 
-
     document.getElementById(
         "rTotalIncome"
     ).textContent =
         money(totalIncome);
-
 
     document.getElementById(
         "rExpensePerAcre"
     ).textContent =
         money(expensePerAcre);
 
-
     document.getElementById(
         "rIncomePerAcre"
     ).textContent =
         money(incomePerAcre);
 
-
     document.getElementById(
         "rFinalExpense"
     ).textContent =
         money(totalExpense);
-
 
     document.getElementById(
         "rFinalIncome"
@@ -1909,7 +1778,6 @@ function generateReport() {
         document.getElementById(
             "rProfit"
         );
-
 
     const profitLossText =
         document.getElementById(
@@ -1923,8 +1791,7 @@ function generateReport() {
             "profit";
 
         profitElement.textContent =
-            "Profit: " +
-            money(profit);
+            "Profit: " + money(profit);
 
         profitLossText.textContent =
             "📈 Profit:";
@@ -1942,61 +1809,24 @@ function generateReport() {
             "📉 Loss:";
     }
 
-
     document.getElementById(
         "report"
     ).style.display = "block";
-
-
-    document.getElementById(
-        "reportButtons"
-    ).style.display = "flex";
-
-
-    document.getElementById(
-        "report"
-    ).scrollIntoView({
-        behavior: "smooth"
-    });
 }
 
 
 /* =========================
-   REPORT EXPENSE
+   ESCAPE HTML
 ========================= */
 
-function addReportExpense(
-    container,
-    name,
-    amount
-) {
+function escapeHtml(text) {
 
-    const item =
+    const div =
         document.createElement("div");
 
-    item.className =
-        "expense-item";
+    div.textContent = text;
 
-
-    const nameText =
-        document.createTextNode(
-            name + ":"
-        );
-
-
-    const strong =
-        document.createElement("strong");
-
-
-    strong.textContent =
-        money(amount);
-
-
-    item.appendChild(nameText);
-
-    item.appendChild(strong);
-
-    container.appendChild(item);
+    return div.innerHTML;
 }
 
 
@@ -2008,6 +1838,10 @@ function printReport() {
 
     generateReport();
 
+    /*
+       Small delay allows the report
+       to render before opening print.
+    */
 
     setTimeout(
         function() {
@@ -2015,7 +1849,7 @@ function printReport() {
             window.print();
 
         },
-        400
+        500
     );
 }
 
@@ -2026,20 +1860,13 @@ function printReport() {
 
 function showInput() {
 
-    document.getElementById(
-        "app"
+    document.querySelector(
+        ".app"
     ).style.display = "block";
-
 
     document.getElementById(
         "report"
     ).style.display = "none";
-
-
-    document.getElementById(
-        "reportButtons"
-    ).style.display = "none";
-
 
     window.scrollTo({
         top: 0,
@@ -2056,50 +1883,93 @@ function resetForm() {
 
     const confirmed =
         confirm(
-            "మీరు అన్ని వివరాలను ఖాళీ చేయాలనుకుంటున్నారా?"
+            "మీరు మొత్తం వివరాలను Reset చేయాలనుకుంటున్నారా?"
         );
-
 
     if (!confirmed) {
         return;
     }
 
 
-    /* CLEAR ALL INPUTS */
+    /* Clear text fields */
 
-    const inputs =
-        document.querySelectorAll(
-            ".form-box input"
-        );
+    document.getElementById(
+        "farmerName"
+    ).value = "";
 
+    document.getElementById(
+        "village"
+    ).value = "";
 
-    inputs.forEach(
-        function(input) {
+    document.getElementById(
+        "cropName"
+    ).value = "";
 
-            if (input.type === "date") {
-
-                input.value = "";
-
-            } else {
-
-                input.value = "";
-            }
-        }
-    );
+    document.getElementById(
+        "acres"
+    ).value = "";
 
 
-    /* CUSTOM EXPENSES CLEAR */
+    /* Clear expenses */
+
+    document.getElementById(
+        "seed"
+    ).value = "";
+
+    document.getElementById(
+        "fertilizer"
+    ).value = "";
+
+    document.getElementById(
+        "labour"
+    ).value = "";
+
+    document.getElementById(
+        "pesticide"
+    ).value = "";
+
+    document.getElementById(
+        "irrigation"
+    ).value = "";
+
+    document.getElementById(
+        "tractor"
+    ).value = "";
+
+    document.getElementById(
+        "diesel"
+    ).value = "";
+
+    document.getElementById(
+        "other"
+    ).value = "";
+
+
+    /* Clear income */
+
+    document.getElementById(
+        "yield"
+    ).value = "";
+
+    document.getElementById(
+        "price"
+    ).value = "";
+
+
+    /* Clear custom expenses */
 
     customExpenses = [];
 
     renderCustomExpenses();
 
 
-    /* STOP VOICE */
+    /* Stop voice */
 
     if (recognition) {
 
-        recognition.stop();
+        try {
+            recognition.stop();
+        } catch (e) {}
 
         recognition = null;
     }
@@ -2108,7 +1978,6 @@ function resetForm() {
     document.getElementById(
         "voiceButton"
     ).style.display = "block";
-
 
     document.getElementById(
         "stopVoiceButton"
@@ -2119,25 +1988,17 @@ function resetForm() {
         "voiceStatus"
     ).style.display = "none";
 
-
     document.getElementById(
         "voiceStatus"
     ).textContent = "";
 
 
-    /* HIDE REPORT */
+    /* Hide report */
 
     document.getElementById(
         "report"
     ).style.display = "none";
 
-
-    document.getElementById(
-        "reportButtons"
-    ).style.display = "none";
-
-
-    /* SET TODAY DATE */
 
     setTodayDate();
 
@@ -2150,19 +2011,17 @@ function resetForm() {
 
 
 /* =========================
-   PAGE LOAD
+   START
 ========================= */
 
-window.addEventListener(
-    "load",
+window.onload =
     function() {
 
         setTodayDate();
 
         renderCustomExpenses();
 
-    }
-);
+    };
 
 </script>
 
