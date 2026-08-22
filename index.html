@@ -478,30 +478,25 @@ button:active {
 
 
 /* =========================
-   A4 PRINT
+   A4 PRINT / SAVE PDF
+   FIXED VERSION
 ========================= */
 
 @page {
     size: A4 portrait;
-    margin: 5mm;
+    margin: 8mm;
 }
 
 @media print {
 
-    html {
-        width: 210mm !important;
-        height: 297mm !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
+    html,
     body {
-        width: 210mm !important;
-        height: 297mm !important;
+        width: 100% !important;
+        height: auto !important;
         margin: 0 !important;
         padding: 0 !important;
         background: white !important;
-        overflow: hidden !important;
+        overflow: visible !important;
     }
 
     .app,
@@ -511,38 +506,39 @@ button:active {
 
     #report {
         display: block !important;
-        width: 200mm !important;
-        max-width: 200mm !important;
-        height: 287mm !important;
-        max-height: 287mm !important;
-        margin: 0 auto !important;
-        padding: 1mm !important;
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
         background: white !important;
-        overflow: hidden !important;
-        page-break-before: avoid !important;
-        page-break-after: avoid !important;
-        page-break-inside: avoid !important;
+        overflow: visible !important;
+        page-break-before: auto !important;
+        page-break-after: auto !important;
+        page-break-inside: auto !important;
     }
 
     .report-header {
-        margin: 0 0 2.5mm 0 !important;
+        margin: 0 0 5mm 0 !important;
     }
 
     .report-header h1 {
-        font-size: 18px !important;
-        line-height: 1.1 !important;
+        font-size: 20px !important;
+        line-height: 1.2 !important;
     }
 
     .section {
-        margin: 0 0 2.5mm 0 !important;
+        margin: 0 0 4mm 0 !important;
         page-break-inside: avoid !important;
+        break-inside: avoid !important;
     }
 
     .section-title {
-        font-size: 12px !important;
-        line-height: 1.1 !important;
-        padding-bottom: 1mm !important;
-        margin-bottom: 1.5mm !important;
+        font-size: 13px !important;
+        line-height: 1.2 !important;
+        padding-bottom: 1.5mm !important;
+        margin-bottom: 2mm !important;
     }
 
     .farmer-grid,
@@ -553,77 +549,80 @@ button:active {
     }
 
     .farmer-grid {
-        gap: 1mm 8mm !important;
+        gap: 2mm 10mm !important;
     }
 
     .expense-grid,
     .income-grid {
-        gap: 1mm 10mm !important;
+        gap: 2mm 12mm !important;
     }
 
     .detail {
-        font-size: 9px !important;
-        line-height: 1.15 !important;
+        font-size: 10px !important;
+        line-height: 1.3 !important;
     }
 
     .detail strong {
-        font-size: 9.5px !important;
+        font-size: 10.5px !important;
     }
 
     .expense-item {
-        font-size: 8.5px !important;
-        line-height: 1.05 !important;
+        font-size: 9.5px !important;
+        line-height: 1.2 !important;
     }
 
     .expense-item strong {
-        font-size: 10px !important;
+        font-size: 10.5px !important;
     }
 
     .income-item {
-        font-size: 9px !important;
-        line-height: 1.1 !important;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
     }
 
     .income-item strong {
-        font-size: 10px !important;
+        font-size: 10.5px !important;
     }
 
     .summary-grid {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 2mm !important;
-        margin-top: 2mm !important;
-        margin-bottom: 2mm !important;
+        gap: 3mm !important;
+        margin: 3mm 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
     }
 
     .summary-card {
-        height: 15mm !important;
-        min-height: 15mm !important;
-        padding: 2mm !important;
+        min-height: 18mm !important;
+        height: auto !important;
+        padding: 3mm !important;
     }
 
     .summary-label {
-        font-size: 8.5px !important;
+        font-size: 9px !important;
     }
 
     .summary-value {
-        font-size: 12px !important;
+        font-size: 13px !important;
     }
 
     .final-result {
-        margin-top: 2mm !important;
-        padding: 2mm !important;
+        margin-top: 3mm !important;
+        padding: 3mm !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
     }
 
     .final-result div {
-        font-size: 8.5px !important;
-        line-height: 1.1 !important;
-        margin: 1mm 0 !important;
+        font-size: 9.5px !important;
+        line-height: 1.3 !important;
+        margin: 1.5mm 0 !important;
     }
 
     .final-result .profit,
     .final-result .loss {
-        font-size: 13px !important;
+        font-size: 14px !important;
     }
 }
 
@@ -744,43 +743,98 @@ button:active {
         <div class="grid">
 
             <div class="field">
+
                 <label>Seed Cost</label>
-                <input type="number" id="seed" value="5000">
+
+                <input
+                    type="number"
+                    id="seed"
+                    value="5000">
+
             </div>
 
+
             <div class="field">
+
                 <label>Fertilizer Cost</label>
-                <input type="number" id="fertilizer" value="10000">
+
+                <input
+                    type="number"
+                    id="fertilizer"
+                    value="10000">
+
             </div>
 
+
             <div class="field">
+
                 <label>Labour Cost</label>
-                <input type="number" id="labour" value="12000">
+
+                <input
+                    type="number"
+                    id="labour"
+                    value="12000">
+
             </div>
 
+
             <div class="field">
+
                 <label>Pesticide Cost</label>
-                <input type="number" id="pesticide" value="4000">
+
+                <input
+                    type="number"
+                    id="pesticide"
+                    value="4000">
+
             </div>
 
+
             <div class="field">
+
                 <label>Irrigation Cost</label>
-                <input type="number" id="irrigation" value="3000">
+
+                <input
+                    type="number"
+                    id="irrigation"
+                    value="3000">
+
             </div>
 
+
             <div class="field">
+
                 <label>Tractor Cost</label>
-                <input type="number" id="tractor" value="8000">
+
+                <input
+                    type="number"
+                    id="tractor"
+                    value="8000">
+
             </div>
 
+
             <div class="field">
+
                 <label>Diesel Cost</label>
-                <input type="number" id="diesel" value="5000">
+
+                <input
+                    type="number"
+                    id="diesel"
+                    value="5000">
+
             </div>
 
+
             <div class="field">
+
                 <label>Other Expenses</label>
-                <input type="number" id="other" value="3000">
+
+                <input
+                    type="number"
+                    id="other"
+                    value="3000">
+
             </div>
 
         </div>
@@ -799,43 +853,58 @@ button:active {
         <div id="voiceStatus"></div>
 
 
-        <!-- BUTTONS -->
+        <!-- EXPENSE ACTIONS -->
 
         <div class="expense-actions">
 
-            <!-- RESET ABOVE ADD EXPENSE -->
+
+            <!-- RESET FIRST -->
 
             <button
                 type="button"
                 class="reset-btn"
                 onclick="resetForm()">
+
                 ♻️ Reset
+
             </button>
 
+
+            <!-- ADD EXPENSE -->
 
             <button
                 type="button"
                 class="add-expense-btn"
                 onclick="addExpense()">
+
                 ➕ Add Expense
+
             </button>
 
+
+            <!-- VOICE EXPENSE -->
 
             <button
                 type="button"
                 class="voice-btn"
                 id="voiceButton"
                 onclick="startVoiceExpense()">
+
                 🎤 Voice Expense
+
             </button>
 
+
+            <!-- STOP -->
 
             <button
                 type="button"
                 class="stop-voice-btn"
                 id="stopVoiceButton"
                 onclick="stopVoiceExpense()">
+
                 ⏹ Stop Voice
+
             </button>
 
         </div>
@@ -882,7 +951,9 @@ button:active {
                 class="generate"
                 type="button"
                 onclick="generateReport()">
+
                 📊 Generate Report
+
             </button>
 
 
@@ -890,7 +961,9 @@ button:active {
                 class="print"
                 type="button"
                 onclick="printReport()">
+
                 🖨️ Print / Save PDF
+
             </button>
 
         </div>
@@ -915,7 +988,7 @@ button:active {
     </div>
 
 
-    <!-- FARMER -->
+    <!-- FARMER DETAILS -->
 
     <div class="section">
 
@@ -926,28 +999,42 @@ button:active {
         <div class="farmer-grid">
 
             <div class="detail">
+
                 Farmer Name:
                 <strong id="rFarmerName"></strong>
+
             </div>
 
+
             <div class="detail">
+
                 Village:
                 <strong id="rVillage"></strong>
+
             </div>
 
+
             <div class="detail">
+
                 Crop Name:
                 <strong id="rCrop"></strong>
+
             </div>
 
+
             <div class="detail">
+
                 Total Acres:
                 <strong id="rAcres"></strong>
+
             </div>
 
+
             <div class="detail">
+
                 Date:
                 <strong id="rDate"></strong>
+
             </div>
 
         </div>
@@ -955,7 +1042,7 @@ button:active {
     </div>
 
 
-    <!-- EXPENSE -->
+    <!-- EXPENSE DETAILS -->
 
     <div class="section">
 
@@ -966,46 +1053,6 @@ button:active {
         <div
             class="expense-grid"
             id="reportExpenseGrid">
-
-            <div class="expense-item">
-                Seed Cost:
-                <strong id="rSeed"></strong>
-            </div>
-
-            <div class="expense-item">
-                Fertilizer Cost:
-                <strong id="rFertilizer"></strong>
-            </div>
-
-            <div class="expense-item">
-                Labour Cost:
-                <strong id="rLabour"></strong>
-            </div>
-
-            <div class="expense-item">
-                Pesticide Cost:
-                <strong id="rPesticide"></strong>
-            </div>
-
-            <div class="expense-item">
-                Irrigation Cost:
-                <strong id="rIrrigation"></strong>
-            </div>
-
-            <div class="expense-item">
-                Tractor Cost:
-                <strong id="rTractor"></strong>
-            </div>
-
-            <div class="expense-item">
-                Diesel Cost:
-                <strong id="rDiesel"></strong>
-            </div>
-
-            <div class="expense-item">
-                Other Expenses:
-                <strong id="rOther"></strong>
-            </div>
 
         </div>
 
@@ -1023,13 +1070,20 @@ button:active {
         <div class="income-grid">
 
             <div class="income-item">
+
                 Total Yield (Quintals):
+
                 <strong id="rYield"></strong>
+
             </div>
 
+
             <div class="income-item">
+
                 Price Per Quintal:
+
                 <strong id="rPrice"></strong>
+
             </div>
 
         </div>
@@ -1104,22 +1158,32 @@ button:active {
     <div class="final-result">
 
         <div>
+
             Total Expense:
             <strong id="rFinalExpense"></strong>
+
         </div>
+
 
         <div>
+
             Total Income:
             <strong id="rFinalIncome"></strong>
+
         </div>
 
+
         <div id="profitLossText">
+
             Profit / Loss:
+
         </div>
+
 
         <div
             id="rProfit"
             class="profit">
+
         </div>
 
     </div>
@@ -1136,13 +1200,18 @@ button:active {
     <button
         class="back-btn"
         onclick="showInput()">
+
         ✏️ Edit Details
+
     </button>
+
 
     <button
         class="print"
         onclick="printReport()">
+
         🖨️ Print / Save PDF
+
     </button>
 
 </div>
@@ -1151,32 +1220,44 @@ button:active {
 <script>
 
 /* =========================
-   DEFAULT VALUES
+   DEFAULT EXAMPLE VALUES
 ========================= */
 
 const DEFAULTS = {
 
     farmerName: "Nelli Prasad",
+
     village: "Nagunur",
+
     cropName: "వరి",
+
     acres: "2.5",
 
     seed: "5000",
+
     fertilizer: "10000",
+
     labour: "12000",
+
     pesticide: "4000",
+
     irrigation: "3000",
+
     tractor: "8000",
+
     diesel: "5000",
+
     other: "3000",
 
     yield: "30",
+
     price: "2500"
+
 };
 
 
 /* =========================
-   CUSTOM EXPENSES
+   VARIABLES
 ========================= */
 
 let customExpenses = [];
@@ -1185,7 +1266,7 @@ let recognition = null;
 
 
 /* =========================
-   DATE
+   TODAY DATE
 ========================= */
 
 function setTodayDate() {
@@ -1197,8 +1278,8 @@ function setTodayDate() {
 
         const today =
             new Date()
-                .toISOString()
-                .split("T")[0];
+            .toISOString()
+            .split("T")[0];
 
         dateInput.value = today;
     }
@@ -1206,16 +1287,18 @@ function setTodayDate() {
 
 
 /* =========================
-   FORMAT MONEY
+   MONEY FORMAT
 ========================= */
 
 function money(value) {
 
     return "₹" +
         Number(value || 0)
-            .toLocaleString("en-IN", {
-                maximumFractionDigits: 2
-            });
+        .toLocaleString("en-IN", {
+
+            maximumFractionDigits: 2
+
+        });
 }
 
 
@@ -1230,14 +1313,19 @@ function addExpense() {
             "Enter expense name:"
         );
 
+
     if (!name || !name.trim()) {
+
         return;
+
     }
+
 
     const amount =
         prompt(
             "Enter expense amount:"
         );
+
 
     if (
         amount === null ||
@@ -1252,6 +1340,7 @@ function addExpense() {
         return;
     }
 
+
     customExpenses.push({
 
         id: Date.now(),
@@ -1261,6 +1350,7 @@ function addExpense() {
         amount: Number(amount)
 
     });
+
 
     renderCustomExpenses();
 
@@ -1279,6 +1369,7 @@ function renderCustomExpenses() {
         document.getElementById(
             "customExpenseList"
         );
+
 
     container.innerHTML = "";
 
@@ -1332,13 +1423,17 @@ function renderCustomExpenses() {
                     customExpenses =
                         customExpenses.filter(
                             function(item) {
+
                                 return item.id !== expense.id;
+
                             }
                         );
+
 
                     renderCustomExpenses();
 
                     generateReport();
+
                 };
 
 
@@ -1384,6 +1479,12 @@ function voiceToInput(inputId) {
         new SpeechRecognition();
 
 
+    /*
+       en-IN supports Indian English.
+       Telugu can also be selected by changing
+       this to te-IN if needed.
+    */
+
     voice.lang = "en-IN";
 
     voice.continuous = false;
@@ -1396,6 +1497,7 @@ function voiceToInput(inputId) {
 
             input.placeholder =
                 "🎤 Listening...";
+
         };
 
 
@@ -1404,14 +1506,16 @@ function voiceToInput(inputId) {
 
             const text =
                 event.results[0][0]
-                    .transcript
-                    .trim();
+                .transcript
+                .trim();
+
 
             input.value = text;
 
             input.placeholder = "";
 
             generateReport();
+
         };
 
 
@@ -1423,6 +1527,7 @@ function voiceToInput(inputId) {
             alert(
                 "Voice input failed. Please try again."
             );
+
         };
 
 
@@ -1430,10 +1535,12 @@ function voiceToInput(inputId) {
         function() {
 
             input.placeholder = "";
+
         };
 
 
     voice.start();
+
 }
 
 
@@ -1463,6 +1570,7 @@ function startVoiceExpense() {
         recognition.stop();
 
         recognition = null;
+
     }
 
 
@@ -1485,6 +1593,7 @@ function startVoiceExpense() {
 
     status.style.display = "block";
 
+
     status.textContent =
         "🎤 Listening... Please say expense name and amount";
 
@@ -1504,8 +1613,8 @@ function startVoiceExpense() {
 
             const text =
                 event.results[0][0]
-                    .transcript
-                    .trim();
+                .transcript
+                .trim();
 
 
             status.textContent =
@@ -1524,44 +1633,44 @@ function startVoiceExpense() {
                     "Amount not detected. Please say something like: Harvesting 5000"
                 );
 
+
                 stopVoiceExpense();
 
                 return;
             }
 
 
+            const lastNumber =
+                numberMatch[
+                    numberMatch.length - 1
+                ];
+
+
             const amount =
-                Number(
-                    numberMatch[
-                        numberMatch.length - 1
-                    ]
-                );
+                Number(lastNumber);
 
 
             let expenseName =
-                text
-                    .replace(
-                        numberMatch[
-                            numberMatch.length - 1
-                        ],
-                        ""
-                    )
-                    .trim();
+                text.replace(
+                    lastNumber,
+                    ""
+                ).trim();
 
 
             expenseName =
                 expenseName
-                    .replace(
-                        /rupees?|rs\.?|₹/gi,
-                        ""
-                    )
-                    .trim();
+                .replace(
+                    /rupees?|rs\.?|₹/gi,
+                    ""
+                )
+                .trim();
 
 
             if (!expenseName) {
 
                 expenseName =
                     "Voice Expense";
+
             }
 
 
@@ -1572,12 +1681,14 @@ function startVoiceExpense() {
                 name: expenseName,
 
                 amount: amount
+
             });
 
 
             renderCustomExpenses();
 
             generateReport();
+
 
             status.textContent =
                 "✅ Added: " +
@@ -1587,6 +1698,7 @@ function startVoiceExpense() {
 
 
             stopVoiceExpense();
+
         };
 
 
@@ -1597,6 +1709,7 @@ function startVoiceExpense() {
                 "❌ Voice input failed. Please try again.";
 
             stopVoiceExpense();
+
         };
 
 
@@ -1607,13 +1720,16 @@ function startVoiceExpense() {
                 "voiceButton"
             ).style.display = "block";
 
+
             document.getElementById(
                 "stopVoiceButton"
             ).style.display = "none";
+
         };
 
 
     recognition.start();
+
 }
 
 
@@ -1628,6 +1744,7 @@ function stopVoiceExpense() {
         recognition.stop();
 
         recognition = null;
+
     }
 
 
@@ -1639,6 +1756,7 @@ function stopVoiceExpense() {
     document.getElementById(
         "stopVoiceButton"
     ).style.display = "none";
+
 }
 
 
@@ -1763,6 +1881,8 @@ function generateReport() {
         ).value;
 
 
+    /* BASE EXPENSE */
+
     const baseExpense =
         seed +
         fertilizer +
@@ -1773,6 +1893,8 @@ function generateReport() {
         diesel +
         other;
 
+
+    /* CUSTOM EXPENSE */
 
     const customTotal =
         customExpenses.reduce(
@@ -1786,34 +1908,44 @@ function generateReport() {
         );
 
 
+    /* TOTAL EXPENSE */
+
     const totalExpense =
         baseExpense +
         customTotal;
 
+
+    /* TOTAL INCOME */
 
     const totalIncome =
         yieldValue *
         price;
 
 
+    /* PROFIT */
+
     const profit =
         totalIncome -
         totalExpense;
 
 
+    /* PER ACRE */
+
     const expensePerAcre =
         acres > 0
-            ? totalExpense / acres
-            : 0;
+        ? totalExpense / acres
+        : 0;
 
 
     const incomePerAcre =
         acres > 0
-            ? totalIncome / acres
-            : 0;
+        ? totalIncome / acres
+        : 0;
 
 
-    /* FARMER */
+    /* =========================
+       FARMER REPORT
+    ========================= */
 
     document.getElementById(
         "rFarmerName"
@@ -1845,57 +1977,9 @@ function generateReport() {
         date;
 
 
-    /* EXPENSE */
-
-    document.getElementById(
-        "rSeed"
-    ).textContent =
-        money(seed);
-
-
-    document.getElementById(
-        "rFertilizer"
-    ).textContent =
-        money(fertilizer);
-
-
-    document.getElementById(
-        "rLabour"
-    ).textContent =
-        money(labour);
-
-
-    document.getElementById(
-        "rPesticide"
-    ).textContent =
-        money(pesticide);
-
-
-    document.getElementById(
-        "rIrrigation"
-    ).textContent =
-        money(irrigation);
-
-
-    document.getElementById(
-        "rTractor"
-    ).textContent =
-        money(tractor);
-
-
-    document.getElementById(
-        "rDiesel"
-    ).textContent =
-        money(diesel);
-
-
-    document.getElementById(
-        "rOther"
-    ).textContent =
-        money(other);
-
-
-    /* CUSTOM EXPENSE REPORT */
+    /* =========================
+       EXPENSE REPORT
+    ========================= */
 
     const reportGrid =
         document.getElementById(
@@ -1903,49 +1987,49 @@ function generateReport() {
         );
 
 
-    reportGrid.innerHTML = `
+    reportGrid.innerHTML = "";
 
-        <div class="expense-item">
-            Seed Cost:
-            <strong>${money(seed)}</strong>
-        </div>
 
-        <div class="expense-item">
-            Fertilizer Cost:
-            <strong>${money(fertilizer)}</strong>
-        </div>
+    const expenses = [
 
-        <div class="expense-item">
-            Labour Cost:
-            <strong>${money(labour)}</strong>
-        </div>
+        ["Seed Cost", seed],
 
-        <div class="expense-item">
-            Pesticide Cost:
-            <strong>${money(pesticide)}</strong>
-        </div>
+        ["Fertilizer Cost", fertilizer],
 
-        <div class="expense-item">
-            Irrigation Cost:
-            <strong>${money(irrigation)}</strong>
-        </div>
+        ["Labour Cost", labour],
 
-        <div class="expense-item">
-            Tractor Cost:
-            <strong>${money(tractor)}</strong>
-        </div>
+        ["Pesticide Cost", pesticide],
 
-        <div class="expense-item">
-            Diesel Cost:
-            <strong>${money(diesel)}</strong>
-        </div>
+        ["Irrigation Cost", irrigation],
 
-        <div class="expense-item">
-            Other Expenses:
-            <strong>${money(other)}</strong>
-        </div>
+        ["Tractor Cost", tractor],
 
-    `;
+        ["Diesel Cost", diesel],
+
+        ["Other Expenses", other]
+
+    ];
+
+
+    expenses.forEach(
+        function(item) {
+
+            reportGrid.innerHTML += `
+
+                <div class="expense-item">
+
+                    ${escapeHtml(item[0])}:
+
+                    <strong>
+                        ${money(item[1])}
+                    </strong>
+
+                </div>
+
+            `;
+
+        }
+    );
 
 
     customExpenses.forEach(
@@ -1964,11 +2048,14 @@ function generateReport() {
                 </div>
 
             `;
+
         }
     );
 
 
-    /* INCOME */
+    /* =========================
+       INCOME REPORT
+    ========================= */
 
     document.getElementById(
         "rYield"
@@ -1982,7 +2069,9 @@ function generateReport() {
         money(price);
 
 
-    /* SUMMARY */
+    /* =========================
+       SUMMARY
+    ========================= */
 
     document.getElementById(
         "rTotalExpense"
@@ -2020,6 +2109,10 @@ function generateReport() {
         money(totalIncome);
 
 
+    /* =========================
+       PROFIT / LOSS
+    ========================= */
+
     const profitElement =
         document.getElementById(
             "rProfit"
@@ -2037,8 +2130,11 @@ function generateReport() {
         profitElement.className =
             "profit";
 
+
         profitElement.textContent =
-            "Profit: " + money(profit);
+            "Profit: " +
+            money(profit);
+
 
         profitLossText.textContent =
             "📈 Profit:";
@@ -2048,26 +2144,36 @@ function generateReport() {
         profitElement.className =
             "loss";
 
+
         profitElement.textContent =
-            "Loss: " + money(
+            "Loss: " +
+            money(
                 Math.abs(profit)
             );
 
+
         profitLossText.textContent =
             "📉 Loss:";
+
     }
 
 
+    /* SHOW REPORT */
+
     document.getElementById(
         "report"
-    ).style.display = "block";
+    ).style.display =
+        "block";
 
 
     document.getElementById(
         "report"
     ).scrollIntoView({
+
         behavior: "smooth"
+
     });
+
 }
 
 
@@ -2080,9 +2186,12 @@ function escapeHtml(text) {
     const div =
         document.createElement("div");
 
+
     div.textContent = text;
 
+
     return div.innerHTML;
+
 }
 
 
@@ -2092,7 +2201,18 @@ function escapeHtml(text) {
 
 function printReport() {
 
+    /*
+       Always create latest report
+       before printing.
+    */
+
     generateReport();
+
+
+    /*
+       Small delay allows browser
+       to update the report.
+    */
 
     setTimeout(
         function() {
@@ -2100,8 +2220,9 @@ function printReport() {
             window.print();
 
         },
-        300
+        500
     );
+
 }
 
 
@@ -2113,23 +2234,35 @@ function showInput() {
 
     document.querySelector(
         ".app"
-    ).style.display = "block";
+    ).style.display =
+        "block";
 
 
     document.getElementById(
         "report"
-    ).style.display = "none";
+    ).style.display =
+        "none";
+
+
+    document.querySelector(
+        ".report-buttons"
+    ).style.display =
+        "flex";
 
 
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
+
 }
 
 
 /* =========================
-   RESET
+   RESET FORM
 ========================= */
 
 function resetForm() {
@@ -2141,7 +2274,9 @@ function resetForm() {
 
 
     if (!confirmed) {
+
         return;
+
     }
 
 
@@ -2229,17 +2364,22 @@ function resetForm() {
         DEFAULTS.price;
 
 
+    /* CLEAR CUSTOM EXPENSES */
+
     customExpenses = [];
 
 
     renderCustomExpenses();
 
 
+    /* STOP VOICE */
+
     if (recognition) {
 
         recognition.stop();
 
         recognition = null;
+
     }
 
 
@@ -2267,19 +2407,33 @@ function resetForm() {
         "";
 
 
+    /* HIDE REPORT */
+
     document.getElementById(
         "report"
     ).style.display =
         "none";
 
 
+    /* SHOW APP */
+
+    document.querySelector(
+        ".app"
+    ).style.display =
+        "block";
+
+
     setTodayDate();
 
 
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
+
 }
 
 
@@ -2294,9 +2448,15 @@ window.onload =
 
         renderCustomExpenses();
 
+        /*
+           Example values will be
+           visible immediately.
+        */
+
         generateReport();
 
     };
+
 
 </script>
 
